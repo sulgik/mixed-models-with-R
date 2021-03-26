@@ -24,11 +24,13 @@ tags$div(
 <br>
 
 
+Mixed model 은 오랜동안 통계학 영역에서 사용되어 왔다. 예를들어, 표준적인 ANOVA 방법들은 mixed model 의 특별한 케이스라고 볼 수 있다. 최근에는, mixed model 은 다양하게 응용되었고 확장되어, 다양한 범위의 데이터 상황들에 적용할 수 있게 되었다. 일반화 선형모형 이상의 툴셋을 확장하는데에 첫 걸음으로 볼 수 있다. 
+
 Mixed models have been around a long time in the statistical realm. For example, standard ANOVA methods can be seen as special cases of a mixed model.  More recently, mixed models have a variety of applications and extensions, allowing them to encompass a diverse range of data situations.  They can be seen as a first step in expanding one's tool set beyond the generalized linear model.
 
 ## Terminology
 
-For the uninitiated, the terminology surrounding mixed models, especially across disciplines, can be a bit confusing. Some terms you might come across regarding these types of models include:
+일반인들에게, mixed model 을 둘러싼 용어들은 조금 헷갈릴 수 있다. 이러한 종류의 모형들과 대하여 보게 될 용어들은 다음과 같다: 
 
 - Variance components
 - Random intercepts and slopes
@@ -41,12 +43,18 @@ For the uninitiated, the terminology surrounding mixed models, especially across
 - Growth curve models (possibly Latent GCM)
 - Mixed effects models
 
-All describe types of mixed models.  Some terms might be more historical, others are more often seen in a specific discipline, others might refer to a certain data structure, and still others are special cases. *Mixed effects*, or simply mixed, models generally refer to a mixture of fixed and random effects.  For the models in general, I prefer the terms 'mixed models' or 'random effects models' because they are simpler terms, no specific structure is implied, and the latter can also apply to extensions that many would not think of when other terms are used[^richlypar].  Regarding the mixed effects, *fixed effects* is perhaps a poor but nonetheless stubborn term for the typical main effects one would see in a linear regression model, i.e. the non-random part of a mixed model, and in some contexts they are referred to as the *population average* effect.  Though you will hear many definitions, random effects are simply those specific to an observational unit, however defined.  The approach outlined in this document largely pertains to the case where the observational unit is the level of some grouping factor, but this is only one possibility.
+이 모두는 mixed model 의 다른 종류를 말한다. 어떤 용어들은 역사가 깊고, 어떤 것들은 특수 분야에서 자주 사용되고, 어떤 것들은 특정 데이터 구조를 뜻하고, 어떤 것들은 특수한 케이스들이다. *Mixed effects* 혹은 mixed model 은 일반적으로 fixed 와 random effect들이 함께 있는 것을 의미한다. 일반적으로 나는 'mixed models' 혹은 'random effects models'를 선호하는데, 더 간단한 용어들이고, 특정한 구조를 의미하지 않고, 후자는 다른 용어들이 사용될 때 많은 사람들이 생각하지 않았을 확장적용될 수 있다[^richlypar]. Mixed effects 에 관해서는, *fixed effects* 는 linear regression model 의 main effect 로서는 약하지만 고루한 용어, 즉, mixed model 에서 random 이 아닌 파트이고, 어떤 문맥에서 *population average* effect 를 의미한다. Random effect 에 대해서 많은 정의를 듣게 되겠지만, 어떻게 정의되던지 간에 한 관측단위에 특정한 것이다. 이 문서에서는 관측단위가 어떤 그룹화 factor 의 레벨인 경우를 다루지만, 이 경우는 단지 한 예일 뿐이다.
+
+All describe types of mixed models. Some terms might be more historical, others are more often seen in a specific discipline, others might refer to a certain data structure, and still others are special cases. *Mixed effects*, or simply mixed, models generally refer to a mixture of fixed and random effects.  For the models in general, I prefer the terms 'mixed models' or 'random effects models' because they are simpler terms, no specific structure is implied, and the latter can also apply to extensions that many would not think of when other terms are used.  Regarding the mixed effects, *fixed effects* is perhaps a poor but nonetheless stubborn term for the typical main effects one would see in a linear regression model, i.e. the non-random part of a mixed model, and in some contexts they are referred to as the *population average* effect.  Though you will hear many definitions, random effects are simply those specific to an observational unit, however defined.  The approach outlined in this document largely pertains to the case where the observational unit is the level of some grouping factor, but this is only one possibility.
 
 
-## Kinds of Clustering
+## Kinds of Clustering 
+
+데이터에 하나 이상의 군집이 있을 수 있고 이 클러스터들은 hierachical 해서 다른 클러스터에 포함되어(nested) 있을 수 있다. 학생들이 여러번 응시한 수학능력시험(SAT) 가 그런 예이다 (학생들 내에 반복된 관측값들이 포함되어 있고, 학생들은 학교 안에 포함되었고, 학교는 학군 내에 포함되어 있다). 포함하지 않는 구조도 있다. 참가자들이 같은 업무를 수행하는 반응시간 실험이 예이다. 관측값들은 개인 내에 포함되어 있지만, 관측값들은 또한 업무유형에 따라 클러스터를 이룬다. 이러한 시나리오를 구분짓기 위해 *겹침(nested)* 과 *crossed* 라는 용어가 사용되기도 한다. 또한, 클러스터는 균형을 이룰 수도 있고 아닐 수도 있다. 실험에서는 균형 클러스터가 많겠지만, 아닌 경우도 있다. 예를 들어, 지리적 단위가 클러스터 이거나 관측값이 사람인 경우이다.
 
 Data might have one or multiple sources of clustering, and that clustering may be hierarchical, such that clusters are nested within other clusters. An example would be scholastic aptitude tests given multiple times to students (repeated observations nested within students, students nested within schools, schools nested within districts). In other cases, there is no nesting structure. An example would be a reaction time experiment where participants perform the same set of tasks.  While observations are nested within individual, observations are also clustered according to task type.  Some use the terms *nested* and *crossed* to distinguish between these scenarios.  In addition, clustering may be balanced or not. We might expect more balance in studies of an experimental nature, but definitely not in other cases, e.g. where the cluster is something like geographical unit and the observations are people.
+
+아래애서 우리는 이러한 데이터 상황들에서 mixed effect model 을 살펴볼 것이다. 일반적으로 우리는 클러스터링이 모델보다는 데이터의 특성이라는 접근법을 취할 것이다. 그러나, mixed model 은 유연해서 다양한 데이터 상황을 다룰 수 있다는 것을 이해하는 것이 중요하다. 
 
 In what follows we'll see mixed effect models in all these data situations. In general, our approach will be the same, as such clustering is really more a property of the data than the model.  However, it's important to get a sense of the flexibility of mixed models to handle a variety of data situations.
 
@@ -54,12 +62,17 @@ In what follows we'll see mixed effect models in all these data situations. In g
 
 ## Random Intercepts Model
 
-For the following we'll demonstrate the simplest[^vcmodel] and most common case of a mixed model, that in which we have a single grouping/cluster structure for the random effect.  For reasons that will hopefully become clear soon, this is commonly called a *random intercepts model*. 
+이후부터는 mixed model 중 가장 간단하고[^vcmodel] 가장 자주 일어나는 케이스인 random effect 의 그룹화/군집 구조가 하나인 케이스를 살펴볼 것이다. 이를 *random intercepts model* 이라고 부르는데, 이유는 곧 알게 될 것이다. 
+
+For the following we'll demonstrate the simplest and most common case of a mixed model, that in which we have a single grouping/cluster structure for the random effect.  For reasons that will hopefully become clear soon, this is commonly called a *random intercepts model*. 
 
 
-## Example: Student GPA
+## 예: 학점 (GPA)
+
+지금부터 우리는 대학 학점을 예측하는 요소를 조사할 것이다. 200 명의 학생을 각각 여섯 번 평가했다 (처음 3년간 모든 학기). 관측값들은 학생 내에서 클러스터되어 있다. 취업상황, 성별, 고등학교 학점과 같은 변수들도 있다. 이들 중 일부는 라벨되어 있고 수치형 형태로 되어 있다.  자세한 내용은 [appendix][Appendix] 을 참고하라.
 
 For the following we'll assess factors predicting college grade point average (GPA).  Each of the 200 students is assessed for six occasions (each semester for the first three years), so we have observations clustered within students. We have other variables such as job status, sex, and high school GPA.  Some will be in both labeled and numeric form. See the [appendix][Appendix] for more detail.
+
 
 ```{r gpa_setup, echo=FALSE, eval=FALSE}
 # MC Note: either the job label is incorrect or this variable makes no sense. 
@@ -112,21 +125,28 @@ DT::datatable(
 
 
 
-## The Standard Regression Model
+## 일반적인 회귀 모형
+
+기본모형을 여러 방법으로 설명할 수 있다. 첫번째로는 표준 회귀부터 시작해서 방향을 잡아본다.
 
 Now for the underlying model. We can show it in a couple different ways. First we start with just a standard regression to get our bearings.
 
 
 $$\mathscr{gpa} = b_{\mathrm{intercept}} + b_{\mathrm{occ}}\cdot \mathscr{occasion} + \epsilon$$
 
+
+절편과 시간효과 계수 ($b$) 가 있다. 오차 ($\epsilon$) 는 평균 0 이고 어떤 편차 $\sigma$ 를 가지는 정규분포를 이룬다고 가장한다 .
+
 We have coefficients ($b$) for the intercept and the effect of time.  The error ($\epsilon$) is assumed to be normally distributed with mean 0 and some standard deviation $\sigma$.
 
 $$\epsilon \sim \mathscr{N}(0, \sigma)$$
+또 다른 방법인, $\mathrm{gpa}$ 데이터를 생성하는 과정을 강조하는 모델은 다음과 같이 쓸 수 있다. 
 
 An alternate way to write the model which puts emphasis on the underlying data generating process for $\mathrm{gpa}$ can be shown as follows.
 
 $$\mathscr{gpa} \sim \mathscr{N}(\mu, \sigma)$$
 $$\mu = b_{\mathrm{intercept}} + b_{\mathrm{occ}}\cdot \mathscr{occasion}$$
+GPA 와 $\mu$  변수는 각 관측값을 나타내는 첨자를 생략했지만, 한 시점에 한 개인에 관한 모델이라고 생각할 수 있다. 
 
 More technically, the GPA and $\mu$ variables have an implicit subscript to denote each observation, but you can also think of it as a model for a single individual at a single time point.
 
@@ -135,54 +155,71 @@ More technically, the GPA and $\mu$ variables have an implicit subscript to deno
 ## The Mixed Model
 
 
-### Initial depiction
+### 초기 모델
+
+이제 우리는 각 학생들마다 고유한 효과를 포함하는 mixed model 로 설명하는 방법을 보일 것이다. 한 학생에 대해 다음 모형을 살펴보자 [^notation]. 이는 학생에 특수한 효과, 즉, 주어진 학생이 GPA 에서의 변인은 분산 원인으로 볼 수 있다.
 
 Now we show one way of depicting a mixed model that includes a unique effect for each student. Consider the following model for a single student[^notation]. This shows that the student-specific effect, i.e. the deviation in GPA just for that student being who they are, can be seen as an additional source of variance.
 
 
 $$\mathscr{gpa} = b_{\mathrm{intercept}} + b_{\mathrm{occ}}\cdot \mathscr{occasion} + (\mathrm{effect}_{\mathscr{student}} + \epsilon)$$
+학생 효과에 대해 다음을 가정할 수 있다. 
 
 We would (usually) assume the following for the student effects.  
 
 
 $$\mathrm{effect}_{\mathrm{student}} \sim \mathscr{N}(0, \tau)$$
 
+따라서 학생효과는 랜덤하고 구체적으로는 평균 0 과 측정된 표준편차 ($\tau$) 를 갖는 정규분포를 이룬다. 다른 말로 하면, mixed model 과 표준 회귀 사이의 개념적 차이는 학생 효과 뿐인데, 평균적으로 효과는 없지만 일반적으로 평균적으로 $\tau$ 값이 학생마다 차이나는 것이다.
+
 Thus the student effects are random, and specifically are normally distributed with mean of zero and some estimated standard deviation ($\tau$). In other words, conceptually the only difference between this mixed model and a standard regression is the student effect, which on average is no effect, but typically varies from student to student by some amount that is on average $\tau$.
+
+다시 정리하면, 오차의 추가 소스보다 모델 계수들에 집중할 수 있다.
 
 If we rearrange it, we can instead focus on model coefficients, rather than as an additional source of error.
 
 $$\mathscr{gpa} = (b_{\mathrm{intercept}} + \mathrm{effect}_{\mathscr{student}}) + b_{\mathrm{occ}}\cdot \mathscr{occasion} +  \epsilon$$
-Or more succinctly:
+더 간단하게 하면:
 
 $$\mathscr{gpa} = b_{\mathrm{int\_student}} + b_{\mathrm{occ}}\cdot \mathscr{occasion} +  \epsilon$$
+
+우리는 학생마다 절편을 갖게 되어서, 학생 각자가 전체 절편에 고유 효과가 더해지게 되어, 결국 각 사람마다 다른 절편을 갖게 된다.
 
 
 In this way, we'll have student-specific intercepts, as each person will have their own unique effect added to the overall intercept, resulting in a different intercept for each person. 
 
 $$b_{\mathrm{int\_student}} \sim \mathscr{N}(b_{\mathrm{intercept}}, \tau)$$
+이제 절편이 평균이 전체 절편이고 어떤 표준편차를 가지는 정규분포를 이루는 것을 보았다. 이를 종종 *랜덤 절편* 모형이라고 부른다.
 
 Now we see the intercepts as normally distributed with a mean of the overall intercept and some standard deviation.  As such this is often called a *random intercepts* model.
 
 
 
-### As a multi-level model
+### Multi-level model
+
+mixed model 을 표현하는 다른 방법은 흔히 *multilevel 모델링* 논문에서 볼 수 있다. 두 개의 파트 회귀 모형으로 더 명시적으로 표현할 수 있는데, 한 파트는 관측값 레벨과 다른 파트는 학생 레벨이다.
 
 Another way of showing the mixed model is commonly seen in the *multilevel modeling* literature.  It is shown more explicitly as a two part regression model, one at the observation level and one at the student level.  
 
 $$\mathrm{gpa} = b_{\mathrm{int\_student}} + b_{\mathrm{occ}}\cdot \mathrm{occasion} + \epsilon$$
 
 $$b_{\mathrm{int\_student}} = b_{\mathrm{intercept}} + \mathrm{effect}_{\mathrm{student}}$$
+하지만, 두번째 레벨부분을 첫번째에 '넣으면' 이전 것과 동일하게 된다.
 
 However, after 'plugging in' the second level part to the first, it is identical to the previous.
 
-Note how we don't have a student-specific effect for occasion.  In this context, occasion is said to be a *fixed effect* only, and there is no random component. This definitely does not have to be the case though, as we'll see later.
+우리는 occasion 마다 학생에 특수한 효과를 갖지 않는다는 것을 주목하라. 이러한 배경에서, 학기는 *fixed effect* 만 갖고, 랜덤 파트는 없다고 말한다. 항상 이렇다고는 할 수 없는데, 나중에 볼 것이다. 
+
+Note how we don't have a student-specific effect for occasion. In this context, occasion is said to be a *fixed effect* only, and there is no random component. This definitely does not have to be the case though, as we'll see later.
 
 
 
-## Application
+## 응용
 
 
-### Initial visualization
+### 시각화
+
+미리 살펴보는 것은 늘 도움이 된다. GPA vs. 학기 플롯을 그려서 출발점과 변화에 있어서 차이를 간략히 보자.
 
 It always helps to look before we leap, so let's do so.  Here we plot GPA vs. occasion (i.e. semester) to get a sense of the variability in starting points and trends.
 
@@ -231,10 +268,14 @@ init %>%
 
 <br>
 
+모든 학생 path들은 연한 선으로 표현되었고 10개 샘플은 진한색으로 표현되어있다. 나중에 볼 회귀모형으로 측정한 전체 트렌드는 빨간색으로 나타냈다. 두 가지가 눈에 띈다. 하나는 처음에 변동이 큰 학생들이다. 두번째는 일반적으로 GPA 트렌드가 상향하지만, 개별 학생들은 궤도에 있어 차이를 보인다는 점이다.
+
 All student paths are shown in faded paths, with a sample of 10 shown in bold. The overall trend, as estimated by the regression we'll do later, is shown in red. Two things stand out.  One is that students have a lot of variability in starting out. Secondly, while the general trend in GPA is upward over time as we'd expect, individual students may vary in that trajectory.
 
 
-### Standard regression
+### 표준 회귀
+
+시작해보자. 우선, 회귀를 살펴보는데, 시간 indicator 를 covariate 로 두는데 수치형으로 할 것이다. 여기서 나는 깨끗한 버전의 요약된 objects 를 사용할 것이라는 점을 주목하라.
 
 So let's get started. First, we'll look at the regression and only the time indicator as a covariate, which we'll treat as numeric.  Note that I present a cleaner version of the summarized objects for the purposes of this document.
 
@@ -254,6 +295,8 @@ gpa_lm_by_group = gpa %>%
 
 coef_lm = coef(gpa_lm)
 ```
+
+`r round(coef_lm[1], 2)`.  In addition, as we move from semester to semester, we can expect GPA to increase by about `r round(coef_lm[2], 2)`
 
 The above tells us that starting out, i.e. when occasion is zero, the average GPA, denoted by the intercept, is `r round(coef_lm[1], 2)`.  In addition, as we move from semester to semester, we can expect GPA to increase by about `r round(coef_lm[2], 2)` points.  This would be fine except that we are ignoring the clustering.  A side effect of doing so is that our standard errors are biased, and thus claims about statistical significance based on them would be off.  More importantly however is that we simply don't get to explore the student effect, which would be of interest by itself.
 

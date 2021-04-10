@@ -66,8 +66,6 @@
 <script src="libs/plotly-main-1.57.1/plotly-latest.min.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
-<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
 
 
 <style type="text/css">
@@ -185,7 +183,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="random_intercepts.html"><a href="random_intercepts.html#summary-of-mixed-model-basics"><i class="fa fa-check"></i>Summary of Mixed Model Basics</a></li>
 <li class="chapter" data-level="" data-path="random_intercepts.html"><a href="random_intercepts.html#exercises-for-starting-out"><i class="fa fa-check"></i>Exercises for Starting Out</a>
 <ul>
-<li class="chapter" data-level="" data-path="random_intercepts.html"><a href="random_intercepts.html#sleep"><i class="fa fa-check"></i>Sleep</a></li>
+<li class="chapter" data-level="" data-path="random_intercepts.html"><a href="random_intercepts.html#수면"><i class="fa fa-check"></i>수면</a></li>
 <li class="chapter" data-level="" data-path="random_intercepts.html"><a href="random_intercepts.html#adding-the-cluster-level-covariate"><i class="fa fa-check"></i>Adding the cluster-level covariate</a></li>
 <li class="chapter" data-level="" data-path="random_intercepts.html"><a href="random_intercepts.html#simulating-a-mixed-model"><i class="fa fa-check"></i>Simulating a mixed model</a></li>
 </ul></li>
@@ -384,7 +382,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="nonlinear-mixed-effects-models" class="section level2">
 <h2>Nonlinear Mixed Effects Models</h2>
-<p>Earlier we used the <span class="pack">nlme</span> package. The acronym stands for <strong>nonlinear</strong> mixed effects models. In this case, we are assuming a specific functional form for a predictor. A common example is a logistic growth curve<a href="#fn28" class="footnote-ref" id="fnref28"><sup>28</sup></a>, and one could use a function like <span class="func">SSlogis</span>.</p>
+<p>Earlier we used the <span class="pack">nlme</span> package. The acronym stands for <strong>nonlinear</strong> mixed effects models. In this case, we are assuming a specific functional form for a predictor. A common example is a logistic growth curve<a href="#fn33" class="footnote-ref" id="fnref33"><sup>33</sup></a>, and one could use a function like <span class="func">SSlogis</span>.</p>
 <p>In other cases we do not specify the functional form, and take a more non-parametric approach. Here’s where the powerful <span class="pack">mgcv</span> package comes in, and there are few if any that have its capabilities for <span class="emph">generalized additive models</span> combined with standard random effects approaches. Depending on the approach you take, you can even get <span class="pack">nlme</span> or <span class="pack">lme4</span> output along with the GAM results. Highly recommended.</p>
 <p>I would also recommend <span class="pack" style="">brms</span>, which has specific functionality for nonlinear models in general, including IRT, as well as additive models in the vein of <span class="pack" style="">mgcv</span>, as it uses the same constructor functions that come that package. It might be your best bet whether you have a specific nonlinear functional form or not.</p>
 </div>
@@ -397,8 +395,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div class="footnotes">
 <hr />
-<ol start="28">
-<li id="fn28"><p>Not to be confused with latent growth curve models or logistic regression.<a href="further.html#fnref28" class="footnote-back">↩︎</a></p></li>
+<ol start="33">
+<li id="fn33"><p>Not to be confused with latent growth curve models or logistic regression.<a href="further.html#fnref33" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>

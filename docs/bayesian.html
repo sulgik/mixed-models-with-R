@@ -66,8 +66,6 @@
 <script src="libs/plotly-main-1.57.1/plotly-latest.min.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
-<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
 
 
 <style type="text/css">
@@ -185,7 +183,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="random_intercepts.html"><a href="random_intercepts.html#summary-of-mixed-model-basics"><i class="fa fa-check"></i>Summary of Mixed Model Basics</a></li>
 <li class="chapter" data-level="" data-path="random_intercepts.html"><a href="random_intercepts.html#exercises-for-starting-out"><i class="fa fa-check"></i>Exercises for Starting Out</a>
 <ul>
-<li class="chapter" data-level="" data-path="random_intercepts.html"><a href="random_intercepts.html#sleep"><i class="fa fa-check"></i>Sleep</a></li>
+<li class="chapter" data-level="" data-path="random_intercepts.html"><a href="random_intercepts.html#수면"><i class="fa fa-check"></i>수면</a></li>
 <li class="chapter" data-level="" data-path="random_intercepts.html"><a href="random_intercepts.html#adding-the-cluster-level-covariate"><i class="fa fa-check"></i>Adding the cluster-level covariate</a></li>
 <li class="chapter" data-level="" data-path="random_intercepts.html"><a href="random_intercepts.html#simulating-a-mixed-model"><i class="fa fa-check"></i>Simulating a mixed model</a></li>
 </ul></li>
@@ -393,18 +391,18 @@ Samples: 4 chains, each with iter = 2000; warmup = 1000; thin = 1;
 Group-Level Effects: 
 ~student (Number of levels: 200) 
                         Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-sd(Intercept)               0.21      0.02     0.18     0.25 1.00     2159     2702
-sd(occasion)                0.07      0.01     0.06     0.08 1.00     1172     1765
-cor(Intercept,occasion)    -0.09      0.11    -0.30     0.13 1.00     1093     2101
+sd(Intercept)               0.21      0.02     0.18     0.25 1.00     1873     2802
+sd(occasion)                0.07      0.01     0.06     0.08 1.00     1138     2176
+cor(Intercept,occasion)    -0.09      0.11    -0.29     0.14 1.00      723     1510
 
 Population-Level Effects: 
           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-Intercept     2.60      0.02     2.56     2.63 1.00     3017     3135
-occasion      0.11      0.01     0.09     0.12 1.00     2812     3025
+Intercept     2.60      0.02     2.56     2.63 1.00     2833     3215
+occasion      0.11      0.01     0.09     0.12 1.00     2402     3236
 
 Family Specific Parameters: 
       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-sigma     0.21      0.01     0.20     0.22 1.00     3055     3049
+sigma     0.21      0.01     0.20     0.22 1.00     3038     2748
 
 Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
 and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -439,16 +437,16 @@ occasion    0.106314   0.005885   18.07</code></pre>
 <pre><code># A tibble: 400 x 7
    group_var effect    group  value    se lower_2.5 upper_97.5
    &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
- 1 student   Intercept 1     -0.199 0.117    -0.428      0.032
- 2 student   Intercept 2     -0.207 0.113    -0.43       0.017
- 3 student   Intercept 3     -0.005 0.117    -0.235      0.218
- 4 student   Intercept 4     -0.093 0.114    -0.322      0.13 
- 5 student   Intercept 5      0.088 0.114    -0.131      0.319
- 6 student   Intercept 6     -0.204 0.115    -0.435      0.022
- 7 student   Intercept 7     -0.15  0.111    -0.365      0.065
- 8 student   Intercept 8      0.148 0.114    -0.081      0.367
- 9 student   Intercept 9      0.036 0.113    -0.19       0.252
-10 student   Intercept 10     0.099 0.113    -0.125      0.316
+ 1 student   Intercept 1     -0.199 0.114    -0.429      0.029
+ 2 student   Intercept 2     -0.209 0.112    -0.43       0.013
+ 3 student   Intercept 3     -0.004 0.111    -0.222      0.214
+ 4 student   Intercept 4     -0.092 0.115    -0.321      0.137
+ 5 student   Intercept 5      0.084 0.116    -0.144      0.316
+ 6 student   Intercept 6     -0.205 0.114    -0.43       0.013
+ 7 student   Intercept 7     -0.153 0.113    -0.378      0.068
+ 8 student   Intercept 8      0.149 0.111    -0.064      0.365
+ 9 student   Intercept 9      0.038 0.113    -0.183      0.256
+10 student   Intercept 10     0.098 0.115    -0.123      0.323
 # … with 390 more rows</code></pre>
 <p>However, we also have some nice plotting functions. Here I plot the occasion effect, as well as the estimated predictions from the model vs. our observed GPA values.</p>
 <div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="bayesian.html#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">conditional_effects</span>(bayesian_mixed)</span></code></pre></div>

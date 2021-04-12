@@ -332,12 +332,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>To best understand a growth curve model, I still think it’s instructive to see it from the mixed model perspective, where things are mostly interpretable from what you know from a standard linear model. We will use our GPA example from before, and one can refer to the <a href="appendix.html#appendix">appendix</a> for more detail.</p>
 <div id="random-effects-as-latent-variables" class="section level3">
 <h3>Random effects as latent variables</h3>
-<p><a href="random_intercepts.html#random-intercepts-model">As before</a> we assume the following for the GPA model. As a simple starting point we merely model a trend of time (occasion- 6 semesters) and have random effects due to student for both intercept and occasion. In this setting we are treating time as numeric, but one could treat the occasion variable as categorical<a href="#fn32" class="footnote-ref" id="fnref32"><sup>32</sup></a>.</p>
+<p><a href="random_intercepts.html#random-intercepts-model">As before</a> we assume the following for the GPA model. As a simple starting point we merely model a trend of time (occasion- 6 semesters) and have random effects due to student for both intercept and occasion. In this setting we are treating time as numeric, but one could treat the occasion variable as categorical<a href="#fn29" class="footnote-ref" id="fnref29"><sup>29</sup></a>.</p>
 <p><span class="math display">\[\mathcal{GPA} = (b_{\mathrm{intercept}} + \mathrm{re}_{\mathrm{intercept}}) + (b_{\mathrm{occ}}  + \mathrm{re}_{\mathrm{occasion}})\cdot \mathrm{occasion} +  \epsilon\]</span></p>
 <p><span class="math display">\[\mathrm{re}_{\mathrm{intercept}} \sim \mathcal{N}(0, \tau)\]</span>
 <span class="math display">\[\mathrm{re}_{\mathrm{occasion}} \sim \mathcal{N}(0, \varphi)\]</span>
 <span class="math display">\[\epsilon \sim \mathcal{N}(0, \sigma)\]</span></p>
-<p>Thus the student effects for the intercept and slope are random, and specifically are normally distributed with mean of zero and some estimated standard deviation (<span class="math inline">\(\tau\)</span>, <span class="math inline">\(\varphi\)</span> respectively)<a href="#fn33" class="footnote-ref" id="fnref33"><sup>33</sup></a>. We consider these effects as coming from unspecified, or <span class="emph">latent</span>, causes due to student. In addition, we have the usual residual error <span class="math inline">\(\epsilon\)</span>, which can also be thought of as a per-observation random effect due to all other unknown causes.</p>
+<p>Thus the student effects for the intercept and slope are random, and specifically are normally distributed with mean of zero and some estimated standard deviation (<span class="math inline">\(\tau\)</span>, <span class="math inline">\(\varphi\)</span> respectively)<a href="#fn30" class="footnote-ref" id="fnref30"><sup>30</sup></a>. We consider these effects as coming from unspecified, or <span class="emph">latent</span>, causes due to student. In addition, we have the usual residual error <span class="math inline">\(\epsilon\)</span>, which can also be thought of as a per-observation random effect due to all other unknown causes.</p>
 <p>The ‘multilevel model’ version might look like the following, but it is identical.</p>
 <p><span class="math display">\[\mathcal{GPA} = b_{\mathrm{int\_student}} + b_{\mathrm{occ\_student}}\cdot \mathrm{occasion} + \epsilon\]</span></p>
 <p><span class="math display">\[b_{\mathrm{int\_student}} = b_{\mathrm{intercept}} + \mathrm{re}_{\mathrm{intercept}}\]</span>
@@ -1551,7 +1551,7 @@ Fixed effects:
 (Intercept) 2.385494   0.021079  113.17
 occasion    0.082838   0.005196   15.94
 lib_hours   0.032216   0.002024   15.92</code></pre>
-<p>Now imagine having just a few of those kinds of variables as would be common in most longitudinal settings. In the mixed model framework one would add them in as any covariate in a regression model, and each covariate would be associated with a single fixed effect. In the LGC framework, one has to regress each time point for the target variable on its corresponding predictor time point. It might take a few paragraphs to explain the coefficients for just a handful of covariates. If you fix them to a single value, you would duplicate the mixed model, but the syntax requires even more tedium<a href="#fn34" class="footnote-ref" id="fnref34"><sup>34</sup></a>.</p>
+<p>Now imagine having just a few of those kinds of variables as would be common in most longitudinal settings. In the mixed model framework one would add them in as any covariate in a regression model, and each covariate would be associated with a single fixed effect. In the LGC framework, one has to regress each time point for the target variable on its corresponding predictor time point. It might take a few paragraphs to explain the coefficients for just a handful of covariates. If you fix them to a single value, you would duplicate the mixed model, but the syntax requires even more tedium<a href="#fn31" class="footnote-ref" id="fnref31"><sup>31</sup></a>.</p>
 </div>
 </div>
 </div>
@@ -1567,7 +1567,7 @@ lib_hours   0.032216   0.002024   15.92</code></pre>
 </div>
 <div id="other-random-effects" class="section level4">
 <h4>Other random effects</h4>
-<p>Just about any LGC you come across in the wild has only one clustering level of interest. However, it’s very common to have multiple and non-hierarchical random effects structure or additional random effects beyond the time covariate. In our example, these might include school, district, or other complicated structure, or the library hours from the time-varying covariate example. Tools like <span class="pack">lme4</span> handle random effects and complicated structure easily. SEM tools do not do this easily, and resort to the multilevel (long-format) approach, which more or less defeats the purpose of using them, as they merely mimic the standard mixed model approach, albeit with yet another and different type of syntax<a href="#fn35" class="footnote-ref" id="fnref35"><sup>35</sup></a>. However, if you have other latent variables or complicated indirect effects, this may be the way to go.</p>
+<p>Just about any LGC you come across in the wild has only one clustering level of interest. However, it’s very common to have multiple and non-hierarchical random effects structure or additional random effects beyond the time covariate. In our example, these might include school, district, or other complicated structure, or the library hours from the time-varying covariate example. Tools like <span class="pack">lme4</span> handle random effects and complicated structure easily. SEM tools do not do this easily, and resort to the multilevel (long-format) approach, which more or less defeats the purpose of using them, as they merely mimic the standard mixed model approach, albeit with yet another and different type of syntax<a href="#fn32" class="footnote-ref" id="fnref32"><sup>32</sup></a>. However, if you have other latent variables or complicated indirect effects, this may be the way to go.</p>
 </div>
 <div id="sample-size" class="section level4">
 <h4>Sample size</h4>
@@ -1858,11 +1858,11 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 </div>
 <div class="footnotes">
 <hr />
-<ol start="32">
-<li id="fn32"><p>I’m omitting the observation level subscript, so this can work for the single observation or entire data set.<a href="supplemental.html#fnref32" class="footnote-back">↩︎</a></p></li>
-<li id="fn33"><p>Usually we would draw both random effects from a multivariate normal distribution with some covariance.<a href="supplemental.html#fnref33" class="footnote-back">↩︎</a></p></li>
-<li id="fn34"><p>To be fair, <span class="pack">Mplus</span> (and presumably <span class="pack">lavaan</span> at some point in the future) has shortcuts to make the syntax easier, but it also can make for more esoteric and less understandable syntax.<a href="supplemental.html#fnref34" class="footnote-back">↩︎</a></p></li>
-<li id="fn35"><p>Honestly, for the same types of models I find the multilevel syntax of <span class="pack">Mplus</span> ridiculously complex relative to R packages.<a href="supplemental.html#fnref35" class="footnote-back">↩︎</a></p></li>
+<ol start="29">
+<li id="fn29"><p>I’m omitting the observation level subscript, so this can work for the single observation or entire data set.<a href="supplemental.html#fnref29" class="footnote-back">↩︎</a></p></li>
+<li id="fn30"><p>Usually we would draw both random effects from a multivariate normal distribution with some covariance.<a href="supplemental.html#fnref30" class="footnote-back">↩︎</a></p></li>
+<li id="fn31"><p>To be fair, <span class="pack">Mplus</span> (and presumably <span class="pack">lavaan</span> at some point in the future) has shortcuts to make the syntax easier, but it also can make for more esoteric and less understandable syntax.<a href="supplemental.html#fnref31" class="footnote-back">↩︎</a></p></li>
+<li id="fn32"><p>Honestly, for the same types of models I find the multilevel syntax of <span class="pack">Mplus</span> ridiculously complex relative to R packages.<a href="supplemental.html#fnref32" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>

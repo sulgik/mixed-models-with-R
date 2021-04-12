@@ -382,7 +382,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="nonlinear-mixed-effects-models" class="section level2">
 <h2>Nonlinear Mixed Effects Models</h2>
-<p>Earlier we used the <span class="pack">nlme</span> package. The acronym stands for <strong>nonlinear</strong> mixed effects models. In this case, we are assuming a specific functional form for a predictor. A common example is a logistic growth curve<a href="#fn31" class="footnote-ref" id="fnref31"><sup>31</sup></a>, and one could use a function like <span class="func">SSlogis</span>.</p>
+<p>Earlier we used the <span class="pack">nlme</span> package. The acronym stands for <strong>nonlinear</strong> mixed effects models. In this case, we are assuming a specific functional form for a predictor. A common example is a logistic growth curve<a href="#fn28" class="footnote-ref" id="fnref28"><sup>28</sup></a>, and one could use a function like <span class="func">SSlogis</span>.</p>
 <p>In other cases we do not specify the functional form, and take a more non-parametric approach. Here’s where the powerful <span class="pack">mgcv</span> package comes in, and there are few if any that have its capabilities for <span class="emph">generalized additive models</span> combined with standard random effects approaches. Depending on the approach you take, you can even get <span class="pack">nlme</span> or <span class="pack">lme4</span> output along with the GAM results. Highly recommended.</p>
 <p>I would also recommend <span class="pack" style="">brms</span>, which has specific functionality for nonlinear models in general, including IRT, as well as additive models in the vein of <span class="pack" style="">mgcv</span>, as it uses the same constructor functions that come that package. It might be your best bet whether you have a specific nonlinear functional form or not.</p>
 </div>
@@ -395,8 +395,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div class="footnotes">
 <hr />
-<ol start="31">
-<li id="fn31"><p>Not to be confused with latent growth curve models or logistic regression.<a href="further.html#fnref31" class="footnote-back">↩︎</a></p></li>
+<ol start="28">
+<li id="fn28"><p>Not to be confused with latent growth curve models or logistic regression.<a href="further.html#fnref28" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>

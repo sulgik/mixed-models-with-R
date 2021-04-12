@@ -8,11 +8,11 @@ knitr::opts_chunk$set(
 
 # More Random Effects
 
-
-Previously we've looked at random intercepts, but any observation or lower level covariate effect could be allowed to vary by cluster as well.
-
+앞에서 랜덤 절편을 살펴보았지만, 클러스터마다 어떤 관측값이나 낮은 레벨의 covariate 효과도 변하게 할 수 있다.
 
 ## Application
+
+GPA 데이터에 돌아가서, 앞선 시각화를 상기해 보자. 학생들 사이의 
 
 Returning to the GPA data, recall the visualization from before.  I've animated it to highlight the differences among students.
 

@@ -12,9 +12,7 @@ knitr::opts_chunk$set(
 
 ## Application
 
-GPA 데이터에 돌아가서, 앞선 시각화를 상기해 보자. 학생들 사이의 
-
-Returning to the GPA data, recall the visualization from before.  I've animated it to highlight the differences among students.
+GPA 데이터에 돌아가서, 앞선 시각화를 상기해 보자. 학생들 사이의 차이를 강조하기 위해 애니메이션으로 표현해 보았다.
 
 
 ```{r spaghetti2-old, echo=FALSE, eval=FALSE}

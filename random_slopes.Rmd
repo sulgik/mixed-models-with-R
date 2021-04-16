@@ -86,14 +86,14 @@ knitr::include_graphics('img/gpa_anim.gif')
 
 
 <br>
-Let us now assume that the trend over time is allowed to vary by student in addition to the intercepts.  Using <span class="pack">lme4</span>, this is quite straightforward.
+절편뿐만 아니라 시간에 따른 변화도 학생에 따라 변할 수 있다고 가정해 보자. <span class="pack">lme4</span> 를 사용하면 바로할 수 있다.
 
 ```{r random_slope, eval=FALSE}
 gpa_mixed =  lmer(gpa ~ occasion + (1 + occasion | student), data = gpa)
 summary(gpa_mixed)
 ```
 
-Pretty easy huh? Within the parenthesis, to the left of that bar `|` we are just positing a model formula as we would do with most modeling functions[^nointneeded]. Let's look at the results.
+꽤 쉽지 않은가? 괄호 안에서, 바 `|` 왼편에 대부분 모델링 함수[^nointneeded]에서 하는 것처럼 모델 공식을 위치시키는 것이다. 결과를 보자.
 
 
 ```{r random_slope_summary, echo=FALSE}
@@ -120,7 +120,9 @@ extract_vc(gpa_mixed, ci_level = 0) %>%
 #   kable_df()
 ```
 
-As before, since we have 0 as our starting semester, the intercept tells us what the average GPA is in the first semester.  The coefficient for occasion still reflects a one semester change in GPA.  As we have not changed the fixed effect portion of the model, the values are the same as before.
+이전에서 처럼, 0 을 첫 학기로 하고 있으므로, 절편은 첫 학기의 평균 학점을 의미하게 된다. 학기 계수는 한 학기의 학점변화량을 의미한다는 것에는 달라진 점이 없다. 모형의 fixed effect 부분에 변화가 없으므로, 값은 전과 같게 된다. 
+
+절편 분산은 시작학기의 평점이 학샘아다 얼마나 차이가 나는지를 의미한다. 학기 효과의 분산은 비교할 것이 없는 것 같지만, 기울기들은 절편보다 더 스케일에 큰 차이가 있다. 학기에 대한 평균 기울기, 즉 fixed 효과는 `r round(fixef(gpa_mixed)[2], 2)` 이지만, 학생마다 절반 정도 차이가 난다. 따라서 대부분의 학생들이 0 을 가지는 flat effect 에서 population 평균 의 두배 이상의 값 사이의 한 값을 가지리라 예상할 수 있다[^sdslopes]. 
 
 The associated intercept variance tells us how much that starting GPA bounces around from student to student. The variance for the occasion effect might not look like much in comparison, but slopes are on a notably different scale than the intercept.  Note that the mean slope for the semester to semester effect, our fixed effect, is `r round(fixef(gpa_mixed)[2], 2)`, but from student to student it bounces around half that.  Thus we could expect most students to fall somewhere between a flat effect of zero to more than double the population average[^sdslopes]. 
 

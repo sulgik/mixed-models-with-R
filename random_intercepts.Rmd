@@ -226,7 +226,7 @@ init %>%
 
 ### 표준 회귀
 
-시작해보자. 우선, 회귀를 살펴보는데, 시간 indicator 를 covariate 로 두는데 수치형으로 할 것이다. 여기서 나는 요약된 객체들 중 깔끔한 버전을 사용할 것이라는 점을 주목하라.
+시작해보자. 우선, 회귀적합 결과를 살펴보는데, 시간 indicator 를 covariate 로 두는데 수치형으로 할 것이다. 여기서 요약객체들 중 보기 편한 버전을 사용한 결과이다.
 
 ```{r gpa_lm, echo=1:3, eval=-3}
 load('data/gpa.RData')
@@ -245,7 +245,7 @@ gpa_lm_by_group = gpa %>%
 coef_lm = coef(gpa_lm)
 ```
 
-이는 절편이 의미하는 시작시점에서, 즉 학기가 0 일 때 평균 학점이 `r round(coef_lm[1], 2)` 임을 보여준다. 또한, 학기가 진행됨에 따라, GPA 가 약 `r round(coef_lm[2], 2)` 점 만큼 증가함을 알 수 있다. 우리가 군집을 무시한다는 점을 제외하고는 큰 문제가 생기지 않는다. 이렇게 하는 것의 단점은 표준오차가 편향되고 따라서 이를 기반으로 한 통계적 유의성에 관한 주장은 잘못될 것이라는 점이다. 하지만 더 중요한 점은 바로 우리의 관심사인 학생 효과를 탐색할 수 없다는 점이다.
+이는 절편이 의미하는 시작시점에서, 즉 학기가 0 일 때 평균 학점이 `r round(coef_lm[1], 2)` 임을 보여준다. 또한, 학기가 진행됨에 따라, GPA 가 약 `r round(coef_lm[2], 2)` 점 만큼 증가함을 알 수 있다. 우리가 군집을 무시한다는 점을 제외하고는 큰 문제가 생기지 않는다. 이렇게 하는 것의 단점은 표준오차가 편향되고 따라서 이를 기반으로 한 통계적 유의성에 관한 주장은 잘못되기 쉽다는 점이다. 하지만 더 중요한 점은 바로 우리의 관심사인 학생 효과를 탐색할 수 없다는 점이다.
 
 
 ### Regression by cluster
@@ -255,7 +255,7 @@ coef_lm = coef(gpa_lm)
 
 ### Running a mixed model
 
-다음으로 학생 효과가 있는 mixed model 을 수행한다. 이 모델은 R 에서 <span class="pack">lme4</span> 패키지로 쉽게 수행할 수 있다. 다음의 코드는 <span class="pack">lme4</span> 으로 회귀에 사용한 것과 똑같이 보일 수 있지만, 그룹을 특정하는 추가요소, 즉 학생 효과가 있다. `(1|student)` 는 `1` 로 표시하는 절편이 학생마다 변하도록 허용한다는 것을 의미한다. 이러한 mixed model 로 회귀와 같은 결과를 얻겠지만, 이에 대해서는 뒤에서 이야기 할 것이다.
+다음으로 학생 효과가 있는 mixed model 을 수행한다. 이 모델은 R 에서 <span class="pack">lme4</span> 패키지로 쉽게 수행할 수 있다. 다음의 코드는 <span class="pack">lme4</span> 으로 회귀에 사용한 것과 똑같이 보일 수 있지만, 그룹을 특정하는 추가요소, 즉 학생 효과가 있다. `(1|student)` 는 `1` 로 표시하는 절편이 학생마다 변하도록 허용한다는 것을 의미한다. 이러한 mixed model 은 회귀와 같은 결과를 얻겠지만, 이에 대해서는 뒤에서 이야기할 것이다.
 
 
 ```{r gpa_mixed, eval=-3}
@@ -278,9 +278,7 @@ extract_vc(gpa_mixed, ci_level = 0) %>%
 
 절편과 시간에 관한 계수들, 즉 우리 상황에서는 *fixed* 효과들은 표준 회귀에서 보았던 것과 같고[^lmlmercoef], 해석도 그렇다는 것을 확인할 수 있다. 반면 결국에는 통계적 유의성이 같은 한, 우리의 결론도 같지만, 표준오차는 *여기서 다르다. 절편의 표준오차가 증가했다는 것에 주목하라. 개념적으로 사람마다 랜덤 절편을 허용해서 개인에 대한 정보를 얻게 해 주는 반면, 우리가 전에 과소추정한[^sewithin] 전체 평균에 관해서 불확실성을 알 수 있다고 할 수 있다. 
 
-계수들과 표준 오차들이 있지만, <span class="pack">lme4</span> 은 p-value 를 주지 않는다는 것을 알아차렸는가? 여기에는 [몇몇 이유](https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#why-doesnt-lme4-display-denominator-degrees-of-freedomp-values-what-other-options-do-i-have) 가 있는데, mixed model 로 다루는 것이 첫번째로는 클러스터마다 샘플 크기가 다른 것들 $N_c$ 인데, 하나의 관측값이 있는 경우도 있다. 두번째로는  N 개의 총 관측값을 다루는데, 이는 레퍼런스 분포, 분모의 자유도와 최상의 해법을 근사하는 방법에 있어서 상황이 이상해지게 된다. 자동으로 p-value 를 제공하는 다른 프로그램들은 이슈가 없는 것같고, p-value 를 계산하는 여러 방법 중 어떤 방법을 사용했는지 말해주지 않는다. 더군다나, 이러한 근사법은 어떤 시나리오에서는 매우 안 좋거나, 그 상황[^fuzzyp]에 적절하지 않은 가정을 한다. 
-
-While we have coefficients and standard errors, you might have noticed that <span class="pack">lme4</span> does not provide p-values!  There are [several reasons](https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#why-doesnt-lme4-display-denominator-degrees-of-freedomp-values-what-other-options-do-i-have) for this, namely that with mixed models we are essentially dealing with different sample sizes, the $N_c$ within cluster, which may vary from cluster to cluster (and even be a single observation!), and N total observations, which puts us in kind of a fuzzy situation with regard to reference distributions, denominator degrees of freedom and how to approximate a 'best' solution. Other programs provide p-values automatically as if there is no issue, and without telling you which approach they use to calculate them (there are several). Furthermore, those approximations may be very poor in some scenarios, or make assumptions that may not be appropriate for the situation[^fuzzyp].
+계수들과 표준 오차들이 있지만, <span class="pack">lme4</span> 은 p-value 를 주지 않는다는 것을 알아차렸는가? 여기에는 [몇몇 이유](https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#why-doesnt-lme4-display-denominator-degrees-of-freedomp-values-what-other-options-do-i-have) 가 있는데, mixed model 로 다루는 것이 첫번째로는 클러스터마다 샘플 크기가 다른 것들 $N_c$ 인데, 하나의 관측값이 있는 경우도 있다. 두번째로는  N 개의 총 관측값을 다루는데, 이는 레퍼런스 분포, 분모의 자유도와 최상의 해법을 근사하는 방법에 있어서 상황이 이상해지게 된다. 자동으로 p-value 를 제공하는 다른 프로그램들은 이슈가 없는 것같고, p-value 를 계산하는 여러 방법 중 어떤 방법을 사용했는지 말해주지 않는다. 더군다나, 이러한 근사법은 어떤 시나리오에서는 매우 안 좋거나, 그 상황에 적절하지 않은 가정을 한다[^fuzzyp]. 
 
 하지만, 신뢰 구간을 구하는 것은 더 직관적인데, 이는 다음과 같이[^confint] <span class="pack">lme4</span> 로 구할 수 있다.
 
@@ -296,7 +294,7 @@ extract_vc(gpa_mixed) %>%
 
 #### Variance components
 
-표준 회귀의 결과와 비교하여 새로운 점 중의 하나는 student 효과 의 분산/표준편차 측정값 (앞에서 본 공식 의 $\tau$) 이다. 이는 우리가 학생마다 살펴볼 때 GPA 가 편균적으로 얼마나 바뀌는지를 알려준다. 다른말로 하면, 시점에 기반한 예측을 한 뒤라도, 각 학생들은 자신의 고유한 변동을 가지고 있고, (편차를 통해) 이 갓ㅂㅅ은 학생들 사이의 평균 편차의 측정값이다. 학생에 기반하여 점수가 바뀌는 것은 학기가 바뀌는 것에 기반한 변화량의 두배 이상인 것을 주목하라. 
+표준 회귀의 결과와 비교하여 새로운 점 중의 하나는 student 효과 의 분산/표준편차 측정값 (앞에서 본 공식 의 $\tau$) 이다. 이는 우리가 학생마다 살펴볼 때 GPA 가 편균적으로 얼마나 바뀌는지를 알려준다. 다른말로 하면, 시점에 기반한 예측을 한 뒤라도, 각 학생들은 자신의 고유한 변동을 가지고 있고, (편차를 통해) 이 값은 학생들 사이의 평균 편차의 측정값이다. 학생에 기반하여 점수가 바뀌는 것은 학기가 바뀌는 것에 기반한 변화량의 두배 이상인 것을 주목하라. 
 
 분산 출력값을 해석하는 다른 방법은 전체 분산에 비례한 학생 분산의 백분율인데 `r round(vcovs[1,1], 3)` / `r round(sum(vcovs), 3)` =  `r round(vcovs[1,1]/sum(vcovs), 2)*100`% 와 같다. 이를 <span class="emph">intraclass correlation</span> 라고 부르는데, within 클러스터 상관계수의 추정값인데 뒤에 살펴보겠다. 
 

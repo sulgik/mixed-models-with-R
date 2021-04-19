@@ -389,14 +389,14 @@ predict(gpa_mixed, re.form = NA) %>% head()
 위 코드에서 우리는 랜덤 효과를 사용하지 않는다고 `re.form = NA` 설정했었고, 따라서 관측값들에 대한 우리의 예측값들은 표준 선형 모형에서 얻는 것과 거의 비슷하다.  
 
 ```{r predict_uncond_lm, echo=1:2}
-predict_no_re = predict(gpa_mixed, re.form=NA)
+predict_no_re = predict(gpa_mixed, re.form = NA)
 predict_lm    = predict(gpa_lm)
 
 tibble(student = as.numeric(gpa$student),
            lm = predict_lm, 
-           `lmer no re`=predict_no_re) %>% 
+           `lmer no re` = predict_no_re) %>% 
   round(2) %>% 
-  DT::datatable(rownames=F, width=500, options=list(dom='pt'))
+  DT::datatable(rownames = F, width = 500, options = list(dom = 'pt'))
 ```
 
 하지만 각 사람들은 고유의 절편을 갖기 때문에, 이 정보를 포함했을 때 예측값들이 얼마나 달라지는지 살펴보자. 

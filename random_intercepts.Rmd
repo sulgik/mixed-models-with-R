@@ -159,7 +159,7 @@ $$b_{\mathrm{int\_student}} \sim \mathscr{N}(b_{\mathrm{intercept}}, \tau)$$
 
 ### Multi-level model
 
-mixed model 을 표현하는 다른 방법은 흔히 *multilevel 모델링* 논문에서 볼 수 있다. 두 개의 파트 회귀 모형으로 표현하면 더 명시적인데, 한 파트는 관측값 레벨과 다른 파트는 학생 레벨이다.
+mixed model 을 표현하는 다른 방법은 *multilevel 모델링* 논문들에서 볼 수 있다. 두 개의 파트 회귀 모형으로 표현하면 더 명시적인데, 한 파트는 관측값 레벨과 다른 파트는 학생 레벨이다.
 
 $$\mathrm{gpa} = b_{\mathrm{int\_student}} + b_{\mathrm{occ}}\cdot \mathrm{occasion} + \epsilon$$
 

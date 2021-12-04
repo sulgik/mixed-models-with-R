@@ -124,15 +124,12 @@ extract_vc(gpa_mixed, ci_level = 0) %>%
 
 절편 분산은 시작학기의 평점이 학샘아다 얼마나 차이가 나는지를 의미한다. 학기 효과의 분산은 비교할 것이 없는 것 같지만, 기울기들은 절편보다 더 스케일에 큰 차이가 있다. 학기에 대한 평균 기울기, 즉 fixed 효과는 `r round(fixef(gpa_mixed)[2], 2)` 이지만, 학생마다 절반 정도 차이가 난다. 따라서 대부분의 학생들이 0 을 가지는 flat effect 에서 population 평균 의 두배 이상의 값 사이의 한 값을 가지리라 예상할 수 있다[^sdslopes]. 
 
-The associated intercept variance tells us how much that starting GPA bounces around from student to student. The variance for the occasion effect might not look like much in comparison, but slopes are on a notably different scale than the intercept.  Note that the mean slope for the semester to semester effect, our fixed effect, is `r round(fixef(gpa_mixed)[2], 2)`, but from student to student it bounces around half that.  Thus we could expect most students to fall somewhere between a flat effect of zero to more than double the population average[^sdslopes]. 
-
-Yet another point of interest is the correlation of the intercepts and slopes. In this case it's `r data.frame(VarCorr(gpa_mixed)) %>% slice(3) %>% select(sdcor) %>%  round(2)`. That's pretty small, but the interpretation is the same as with any correlation.  In this case specifically, it tells us that those with lower intercepts would be associated with increased time trajectories.   This makes intuitive sense in that people are improving in general, and those at the bottom would have more room to improve.  However, this is very slight, and practically speaking we might not put too much weight on it.
+절편과 기울기의 correlation 은 다른 흥미로운 포인트이다. 우리 경우는 `r data.frame(VarCorr(gpa_mixed)) %>% slice(3) %>% select(sdcor) %>%  round(2)` 이다. 꽤 작은 편이지만 다른 correlation 과 해석은 비슷하다. 이 경우 절편값이 작을수록 기울기가 커지게 된다. 일반적으로 사람들 성적이 좋아지고 잘 못하는 사람은 개선될 여지가 더 많을 것이라는 것은 직관적이다. 하지만, 매우 약하고, 실제로는 여기에 큰 비중을 둘 필요가 없다.
 
 
-## Comparison to many regressions
+## 개별 회귀모델과 비교
 
-
-Let's compare these results to the ones we would have gotten had we run a separate regression for each student.  In what follows we see the distribution of of the estimated intercept and slope coefficients for all the students.  Note that these are the same estimates one would have gotten with a fixed effects model with an occasion by student interaction[^fe_comparison].
+이러한 결과를 각 학생에 대해 분리된 회귀를 실행했을 때의 결과와 비교해보자. 다음에서 모든 학생들에 대한 절편과 기울기 계수의 분포를 볼 수 있다. occansion x student interaction [^fe_comparison]이 있는 fixed 효과모델에서 추정한 것과 같다는 것을 주목하라.
 
 ```{r ranints_vs_separateints, echo=FALSE, eval=FALSE}
 gint = tibble(

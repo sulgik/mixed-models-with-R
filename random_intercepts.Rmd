@@ -26,7 +26,7 @@ tags$div(
 
 Mixed model 은 오랜동안 통계학 분야에서 사용되어 왔다. 예를들어, 표준적인 ANOVA 방법들은 mixed model 의 특별한 케이스라고 볼 수 있다. 최근에는, mixed model 은 다양하게 응용되었고 확장되어, 다양한 범위의 데이터 상황들에 적용할 수 있게 되었다. 일반화 선형모형 이상의 툴셋을 확장하는데에 첫 걸음으로 볼 수 있다. 
 
-## Terminology
+## 용어
 
 일반인들에게, mixed model 을 둘러싼 용어들은 조금 헷갈릴 수 있다. 이러한 종류의 모형들과 대하여 보게 될 용어들은 다음과 같다: 
 
@@ -483,7 +483,7 @@ Mixed model 을 이용하면 데이터 안의 군집을 설명할 수 있다. �
 
 ### 수면 
 
-For this exercise, we'll use the sleep study data from the <span class="pack">lme4</span> package.  The following describes it.
+이 예시에서 <span class="pack">lme4</span> 패키지의 수면연구 (sleep study) 데이터를 사용할 것이다. 다음에서 기술되어 있다. 
 
 > The average reaction time per day for subjects in a sleep deprivation study. On day 0 the subjects had their normal amount of sleep. Starting that night they were restricted to 3 hours of sleep per night. The observations represent the average reaction time (in milliseconds) on a series of tests given each day to each subject.
 

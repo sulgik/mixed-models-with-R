@@ -5,14 +5,13 @@ Mixed model 은 데이터 안 관측값들 사이에 dependency 가 있는 경�
 
 ### Goals
 
-This document also serves as the basis for a workshop. The goal of the workshop is primarily to provide a sense of when one would use mixed models and a variety of standard techniques to implement them.  Exercises are available to practice your skills.
-
+이 문서는 워크샵 교재로도 사용될 것입니다. 워크샵 목표는 혼합모형을 사용해야하는 경우를 알게 해주고 이를 구현하는 다양한 표준 기술을 제공하는 것입니다. 기술들을 연습하기 위한 과정들이 준비되어 있습니다.
 
 ### 준비하기
 
-The document is for the most part very applied in nature, and only assumes a basic understanding of standard regression models. Use of R for regression modeling is also assumed, though there will be some review.  Demonstrations will be done almost entirely with the <span class="pack">lme4</span> package.
+이 문서는 대부분 응용에 대해 다루고, 표준 회귀 모형을 기초적인 이해가 있다는 것만 가정합니다. R 을 이용하여 회귀 모델링 복습을 조금은 하겠지만 기본적으로 경험 있는 것을 가정합니다. 예제는 대부분 <span class="pack">lme4</span> 패키지를 이용해서 이루어 질 것입니다.
 
-Note the following color coding used in this document:
+이 문서에서 아래의 컬러 코딩을 사용합니다:
 
 - <span class="emph">emphasis</span>
 - <span class="pack">package</span>
@@ -21,20 +20,20 @@ Note the following color coding used in this document:
 - [link]() (with hover underline)
 
 
-## Workshop
+## 워크샵
 
-If doing or interested in the workshop follow these steps:
+워크샵을 하려면 다음 단계를 따르세요:
 
-0. Download the zip file at [GitHub](https://github.com/m-clark/mixed-models-with-r-workshop-2019/archive/master.zip). Be mindful of where you put it.
-1. Unzip it. Be mindful of where you put the resulting folder.
-2. Open RStudio.
-3. File/Open Project and click on the blue icon (`mixed-models-with-r-workshop-2019.Rproj`) in the folder you just created.
-4. File/Open Click on the ReadMe file and do what it says.
+0. [GitHub](https://github.com/m-clark/mixed-models-with-r-workshop-2019/archive/master.zip) 에서 zip 파일을 다운로드한다. 어디에 다운로드 했는지 기억하라.
+1. Unzip 한다. 어디 위치에 폴더 압축을 푸는지 기억하라.
+2. RStudio 를 실행한다.
+3. File/Open Project 하고 방금 생성한 폴더에서 파란 아이콘 (`mixed-models-with-r-workshop-2019.Rproj`) 을 클릭한다.
+4. File/Open File 을 클릭하고, ReadMe 파일을 연 뒤 안에 쓰여 있는 대로 실행한다.
 
 
-## Key packages
+## 핵심 패키지
 
-To run the code in this document you'll really only need the following:
+이 문서의 코드를 실행하기 위해서 다음 패키지들만 필요할 것이다:
 
 - <span class="pack">lme4</span> 
 - <span class="pack">tidyverse</span> (for data processing)
@@ -42,6 +41,6 @@ To run the code in this document you'll really only need the following:
 - <span class="pack">glmmTMB</span> (optional)
 - <span class="pack">brms</span> (optional)
 - <span class="pack">modelr</span> (optional)
-- <span class="pack">nlme</span> (part of base R, no need for install)
+- <span class="pack">nlme</span> (base R 에 구성됨, 설치 불필요)
 
-I also use a custom package called <span class="pack">mixedup</span> that provides more usable and printable output for mixed models from <span class="pack">lme4</span>, <span class="pack">brms</span>, <span class="pack">mgcv</span>, etc. Much of the output you see will come from that.
+<span class="pack">mixedup</span> 라고 부르는 커스텀 패키지도 사용하는데 이는 <span class="pack">lme4</span>, <span class="pack">brms</span>, <span class="pack">mgcv</span>, 패키지 등의 mixed model 과 관련된 출력을 더 사용성 있고 출력하기 편하게 만들어 준다. 이제 보게 될 결과물을 많은 부분은 이 패키지로 부터 나왔다.

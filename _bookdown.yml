@@ -2,25 +2,23 @@ book_filename: 'mixed_models'
 language:
   ui:
     chapter_name: 'Chapter '
-output_dir: 'docs'
 delete_merged_file: true
 
 rmd_files: [
   'index.Rmd',
   'introduction.Rmd',
 
-  # Part I: Standard Models
+  # Part I: 표준 모델
   'random_intercepts.Rmd',
   'random_slopes.Rmd',
 
-
-  # Part II: Extensions & Issues
+  # Part II: 확장과 이슈
   'extensions.Rmd',
   'issues.Rmd',
   'bayesian.Rmd',
   'further.Rmd',
   
-  # Part III: Conclusion
+  # Part III: 결론
   'summary.Rmd',
   'supplemental.Rmd',
   'appendix.Rmd'

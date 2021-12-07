@@ -51,12 +51,12 @@ crossing(Person = 1:20, Image = letters[1:10]) %>%
 <br>
 <br>
 
-이 경우, 관측값이 사람과 이미지 내로 군집이 되지만, 사람과 이미지는 서로 포함관계가 아니고 - 모든 참가자들은 10개 이미지 모두를 보았다. 이러한 경우는 일반적으로 <span class="emph">crossed</span> random effect 가 있다라고 하는데, non-nested 라는 의미이다. 다음에서 보게될 상황에서 여러개의 소스의 분산을 보게 될 것이다.
+이 경우, 관측값이 사람과 이미지 내로 군집이 되지만, 사람과 이미지는 서로 포함관계가 아니고 - 모든 참가자들은 10개 이미지 모두를 보았다. 이러한 경우는 일반적으로 <span class="emph">crossed</span> random effect 가 있다라고 하는데, non-nested 라는 의미이다. 다음에서 보게 될 상황에서 여러개의 소스의 분산을 보게 될 것이다.
 
 
 #### 예: 학생 학업성취도
 
-예시를 위해 학생의 학업성취도 점수를 살펴 볼 것이다. 의존성 소스는 같은 통합학교를 가거나, 중학교진학한 학생에 기인한다. 하지만, 이 예에서, 초등학교를 간다는 것은 반드시 중학교를 가는 것은 아니다. 반복측정값이 없고, 각 학생을 딱 한번만 측정했다는 것을 주목하라. 데이터를 빠르게 본 것인데, 더 자세한 내용은 [appendix][Data] 을 확인하라.
+예시를 위해 학생의 학업성취도 점수를 살펴볼 것이다. 의존성 소스는 같은 초등학교를 가거나, 중학교 진학한 학생에 기인한다. 하지만, 이 예에서, 한 초등학교(primary school)를 간다는 것은 반드시 특정한 중학교(secondary school)를 가는 것은 아니다. 반복측정값이 없고, 각 학생을 딱 한번만 측정했다는 것을 주목하라. 데이터를 빠르게 본 것인데, 더 자세한 내용은 [appendix][Data] 을 확인하라.
 
 
 ```{r pupil_nurses_setup, echo=FALSE, eval=FALSE}
@@ -108,7 +108,7 @@ DT::datatable(pupils,
 <br>
 <br>
 
-우리의 mixed model 에서, 학업성취도에 대한 `sex`, 낮음에서 높음까지의 여섯 단계 변수인 사회경제적 지위, `ses` 효과를 살펴볼 것이다. 성취도 범위는 약 `r round(min(pupils$achievement))` 에서 `r round(max(pupils$achievement))` 까지이고, 평균은 `r round(mean(pupils$achievement), 1)`, 표준편차는 `r round(sd(pupils$achievement), 1)` 이다. 통합학교와 중학교의 클러스터링 고려할 것이다. <span class="pack">lme4</span> 문법으로 추가 구조를 넣는 것은, 지금은 그룹 인자가 두개[^crossed_notation]로 늘었지만, 앞에서 본 것 처럼 매우 쉽다.
+우리의 mixed model 에서, 학업성취도에 대한 `sex`, 낮음에서 높음까지의 여섯 단계 변수인 사회경제적 지위, `ses` 효과를 살펴볼 것이다. 성취도 범위는 약 `r round(min(pupils$achievement))` 에서 `r round(max(pupils$achievement))` 까지이고, 평균은 `r round(mean(pupils$achievement), 1)`, 표준편차는 `r round(sd(pupils$achievement), 1)` 이다. 초등학교와 중학교의 클러스터링 고려할 것이다. <span class="pack">lme4</span> 문법으로 추가 구조를 넣는 것은, 지금은 그룹 인자가 두개[^crossed_notation]로 늘었지만, 앞에서 본 것 처럼 매우 쉽다.
 
 ```{r cross_classified, eval=1}
 pupils_crossed = lmer(
@@ -137,15 +137,15 @@ crossed_var_cor %>%
   kable_df(digits = 2)
 ```
 
-분산 컴포넌트를 보면, When we look at the variance components we see that primary and secondary school contributes about `r perc(sum(crossed_var_cor$variance[1:2])/sum(crossed_var_cor$variance), digits = 0)` of the total variance.  Most of the variance attributable to school comes from the primary school.
+분산 컴포넌트를 보면, 초등학교와 중학교가 전체 변동의 약 `r perc(sum(crossed_var_cor$variance[1:2])/sum(crossed_var_cor$variance), digits = 0)` 를 기여하고 있음을 알 수 있다. 학교에 기인한 변동의 대부분은 초등학교에서 온다.
 
-If we inspect the random effects, we can see that we now have two sets of effects- `r n_distinct(pupils$primary_school_id)` for the primary schools, and `r n_distinct(pupils$secondary_school_id)` for the secondary.  Both would be incorporated into any pupil-specific prediction.
+Random Effeict 를 조사하면, 두가지 세트의 효과를 가진다는 것을 볼 수 있다 - 초등학교에 해당하는 `r n_distinct(pupils$primary_school_id)` 개와 중학교에 해당하는 `r n_distinct(pupils$secondary_school_id)` 개 이다. 두 개다 학생-specific 예측에 포함된다.
 
 ```{r crossed_re}
 glimpse(ranef(pupils_crossed))
 ```
 
-Let's look at them visually using <span class="pack">merTools</span>.
+<span class="pack">merTools</span> 을 사용하여 시각적으로 살펴보자.
 
 ```{r crossed_re_plot, echo=FALSE}
 p = merTools::plotREsim(merTools::REsim(pupils_crossed)) +
@@ -171,7 +171,7 @@ p
 
 Note that we have the usual extensions here if desired.  As an example, we could also do random slopes for student level characteristics.
 
-### Hierarchical structure
+### 계층구조
 
 Now that we have looked at cross-classified models, we can proceed to examine hierarchical cluster structuring.  In this situation we have clusters nested within other clusters, which may be nested within still other clusters.  A typical example might be cities within counties, and counties within states.
 

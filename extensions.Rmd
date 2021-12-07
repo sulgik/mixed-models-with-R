@@ -7,7 +7,7 @@ knitr::opts_chunk$set(
 ```
 
 
-# Common Extensions
+# 확장모델
 
 <br>
 
@@ -24,12 +24,12 @@ tags$div(
 
 <br>
 
-## Additional Grouping Structure
+## 추가 군집 구조
 
 
 ### Cross-classified models
 
-Oftentimes there will be additional sources of variance beyond one grouping factor. Consider as an example, a visual perception experiment where there are multiple trials for each individual, along with specific images displayed.  Such data might look like this.
+하나의 군집 요인을 넘어 추가적인 분산 소스가 있는 경우가 종종 생길 것이다. 예를들어, 특정 그림들을 보여주고 각 개인이 여러번 시행하는 시각인지 실험을 생각해보자. 데이터가 다음과 같을 것이다. 
 
 ```{r demodata_crossed, echo=FALSE}
 crossing(Person = 1:20, Image = letters[1:10]) %>%
@@ -51,12 +51,12 @@ crossing(Person = 1:20, Image = letters[1:10]) %>%
 <br>
 <br>
 
-In these situations, we have observations clustered within both person and image, but person and image are not nested within one another- all participants see all 10 images.  Such a situation is typically referred to as one in which there are <span class="emph">crossed</span> random effects, which just means non-nested.  In the situations we'll look at next, we will have multiple sources variances to consider.
+이 경우, 관측값이 사람과 이미지 내로 군집이 되지만, 사람과 이미지는 서로 포함관계가 아니고 - 모든 참가자들은 10개 이미지 모두를 보았다. 이러한 경우는 일반적으로 <span class="emph">crossed</span> random effect 가 있다라고 하는데, non-nested 라는 의미이다. 다음에서 보게될 상황에서 여러개의 소스의 분산을 보게 될 것이다.
 
 
-#### Example: Student achievement
+#### 예: 학생 학업성취도
 
-For our own demonstration we'll look at achievement scores for students.  The sources of dependency are due to students having gone to the same primary or secondary schools.  However, in this example, going to a primary school doesn't necessarily mean you'll go to a specific secondary school.  Note also that there are no repeated measures, we see each student only once. Here's a quick look a the data, and for more detail, check the [appendix][Data].
+예시를 위해 학생의 학업성취도 점수를 살펴 볼 것이다. 의존성 소스는 같은 통합학교를 가거나, 중학교진학한 학생에 기인한다. 하지만, 이 예에서, 초등학교를 간다는 것은 반드시 중학교를 가는 것은 아니다. 반복측정값이 없고, 각 학생을 딱 한번만 측정했다는 것을 주목하라. 데이터를 빠르게 본 것인데, 더 자세한 내용은 [appendix][Data] 을 확인하라.
 
 
 ```{r pupil_nurses_setup, echo=FALSE, eval=FALSE}
@@ -108,7 +108,7 @@ DT::datatable(pupils,
 <br>
 <br>
 
-For our mixed model we'll look at the effects for `sex` and socioeconomic status, `ses`, a six level variable from low to high, on scholastic achievement.  The range of achievement scores is roughly `r round(min(pupils$achievement))` to `r round(max(pupils$achievement))`, with mean of `r round(mean(pupils$achievement), 1)` and standard deviation `r round(sd(pupils$achievement), 1)`.  We'll take into account the clustering at primary school and secondary school.  To incorporate the additional structure in <span class="pack">lme4</span> syntax is very easy, we just do as we did before, though now for both grouping factors[^crossed_notation].
+우리의 mixed model 에서, 학업성취도에 대한 `sex`, 낮음에서 높음까지의 여섯 단계 변수인 사회경제적 지위, `ses` 효과를 살펴볼 것이다. 성취도 범위는 약 `r round(min(pupils$achievement))` 에서 `r round(max(pupils$achievement))` 까지이고, 평균은 `r round(mean(pupils$achievement), 1)`, 표준편차는 `r round(sd(pupils$achievement), 1)` 이다. 통합학교와 중학교의 클러스터링 고려할 것이다. <span class="pack">lme4</span> 문법으로 추가 구조를 넣는 것은, 지금은 그룹 인자가 두개[^crossed_notation]로 늘었지만, 앞에서 본 것 처럼 매우 쉽다.
 
 ```{r cross_classified, eval=1}
 pupils_crossed = lmer(
@@ -128,7 +128,7 @@ pupils_crossed %>%
   kable_df()
 ```
 
-The fixed effects tell us there is a positive effect of being female on achievement, and in general, relative to lowest SES category, being in the upper categories of SES also has a positive effect.
+fixed effect 는 학업성취도에 있어 여자인 것이 양의 효과를 가지고, 일반적으로, 가장 낮은 사회경제적지위 범주에 비해 상위 범주가 양의 효과를 가진다는 것을 보여준다.
 
 ```{r  cross_classified_random, echo=FALSE}
 crossed_var_cor = extract_vc(pupils_crossed, ci_level = 0) 
@@ -137,7 +137,7 @@ crossed_var_cor %>%
   kable_df(digits = 2)
 ```
 
-When we look at the variance components we see that primary and secondary school contributes about `r perc(sum(crossed_var_cor$variance[1:2])/sum(crossed_var_cor$variance), digits = 0)` of the total variance.  Most of the variance attributable to school comes from the primary school.
+분산 컴포넌트를 보면, When we look at the variance components we see that primary and secondary school contributes about `r perc(sum(crossed_var_cor$variance[1:2])/sum(crossed_var_cor$variance), digits = 0)` of the total variance.  Most of the variance attributable to school comes from the primary school.
 
 If we inspect the random effects, we can see that we now have two sets of effects- `r n_distinct(pupils$primary_school_id)` for the primary schools, and `r n_distinct(pupils$secondary_school_id)` for the secondary.  Both would be incorporated into any pupil-specific prediction.
 

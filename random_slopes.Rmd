@@ -122,7 +122,7 @@ extract_vc(gpa_mixed, ci_level = 0) %>%
 
 이전에서처럼, 0 을 첫 학기로 하고 있으므로, 절편은 첫 학기의 평균 학점을 의미하게 된다. 학기 계수는 한 학기의 학점변화량을 의미한다는 것에는 달라진 점이 없다. 모형의 fixed effect 부분에 변화가 없으므로, 값은 전과 같게 된다. 
 
-절편 분산은 시작학기의 평점이 학샘아다 얼마나 차이가 나는지를 의미한다. 학기 효과의 분산은 비교할 것이 없는 것 같지만, 기울기들은 절편보다 더 스케일에 큰 차이가 있다. 학기에 대한 평균 기울기, 즉 fixed 효과는 `r round(fixef(gpa_mixed)[2], 2)` 이지만, 학생마다 절반 정도 차이가 난다. 따라서 대부분의 학생들이 0 을 가지는 flat effect 에서 population 평균 의 두배 이상의 값 사이의 한 값을 가지리라 예상할 수 있다[^sdslopes]. 
+절편 분산은 시작학기의 평점이 학샘아다 얼마나 차이가 나는지를 의미한다. 학기 효과의 분산은 비교할 것이 없는 것 같지만, 기울기는 절편보다 더 스케일에 큰 차이가 있다. 학기에 대한 평균 기울기, 즉 fixed 효과는 `r round(fixef(gpa_mixed)[2], 2)` 이지만, 학생마다 절반 정도 차이가 난다. 따라서 대부분의 학생들이 0 을 가지는 flat effect 에서 population 평균의 두배 이상의 값 사이의 한 값을 가지리라 예상할 수 있다[^sdslopes]. 
 
 절편과 기울기의 correlation 은 다른 흥미로운 포인트이다. 우리 경우는 `r data.frame(VarCorr(gpa_mixed)) %>% slice(3) %>% select(sdcor) %>%  round(2)` 이다. 꽤 작은 편이지만 다른 correlation 과 해석은 비슷하다. 이 경우 절편값이 작을수록 기울기가 커지게 된다. 일반적으로 사람들 성적이 좋아지고 잘 못하는 사람은 개선될 여지가 더 많을 것이라는 것은 직관적이다. 하지만, 매우 약하고, 실제로는 여기에 큰 비중을 둘 필요가 없다.
 
@@ -186,7 +186,7 @@ knitr::include_graphics('img/shrinkage_main.svg')
 
 여기에서 우리는 mixed model 절편이 일반적으로 극단적이지 않음을 볼 수 있다, 즉, 분포 꼬리가 전체 효과쪽으로 당겨졌다. 기울기들도 마찬가지이다. 두 경우다 mixed model 은 by-group 추정치를 감소시켰는데, 다르게 취급했다면 이러한 시나리오에서 과적합되었을 것이다. 이러한 <span class="emph">regularizing</span> 효과는 mixed model[^pool]을 사용할 때 얻을 수 있는 또다른 보너스이다. 그룹마다 관측값이 많지 않고, 랜덤이팩트의 추정 분산이 작을 때 이러한 일이 일어난다. 다른 말로 하면, 그룹마다 정보가 적거나, 관측값 분산에 비해 그룹레벨 분산이 상대적으로 작으면, mixed model 은 group-specific effect 가 전체 population effect 에 가까운 값으로 제공할 것이다. 이러한 맥락에서 mixed model group 계수들은 우리가 모른다는 것을 더 잘 반영한다. 반대로, with more pronounced group effec, 전체 효과에 대한 우리의 불확실성은 증가한다.
 
-다음은 앞서 보았던 GPA 모델의 결과에 기반한 시뮬레이션 데이터의 다양한 세팅 아래에서 비슷한 데이터에 어떤 일들이 일어나는 지를 보여준다. 맨 왼쪽은 현재 데이터 세팅을 바로 보여준다. 그 다음, 원 결과를 따라 네가지 세팅이 있다. 처음은 학생마다 훨씬 많은 측정값이 있다면 어떤 일이 일어나는지를 보여준다. 다음은, 절편과 기울기 분산을 증가하고 잔차분산을 감소시키지만 샘플 사이즈를 원 데이터와 같게 유지한다. 두 경우 다 mixed model 의 regulizaing effect 가 더 작다. 랜덤 계수들은 개별 회귀 결과와 매우 유사하다. 그리고, 데이터를 동일하게 유지하지만, Then, we keep the data the same but where we only have 4 observations per student, which shows more variability in the per-student results, and thus relatively more shrinkage with the mixed model. Finally, we add to the number of occasions per student (10), but have dropout over time, and so have roughly the same amount of data, but which is imbalanced.  For more on this see topic, see my post [here](https://m-clark.github.io/posts/2019-05-14-shrinkage-in-mixed-models/).
+다음은 앞서 보았던 GPA 모델의 결과에 기반한 시뮬레이션 데이터의 다양한 세팅 아래에서 비슷한 데이터에 어떤 일들이 일어나는 지를 보여준다. 맨 왼쪽은 현재 데이터 세팅을 바로 보여준다. 그 다음, 원 결과를 따라 네가지 세팅이 있다. 처음은 학생마다 훨씬 많은 측정값이 있다면 어떤 일이 일어나는지를 보여준다. 다음은, 절편과 기울기 분산을 증가하고 잔차분산을 감소시키지만 샘플 사이즈를 원 데이터와 같게 유지한다. 두 경우 다 mixed model 의 regulizaing effect 가 더 작다. 랜덤 계수들은 개별 회귀 결과와 매우 유사하다. 그리고, 데이터를 동일하게 유지하지만, 학생당 4 관측값만 있을 때, 학생당 결과에서 변동성이 더 커서 mixed model 에서 shrinkage 가 상대적으로 덜 일어난다. 마지막으로 학생당 occasions 숫자를 더하지만 (10), 시간이 흐르면서 유실도 있어서 대략 데이터 양은 비슷하지만, 불균형이다. 이 주제에 대한 더 보고 싶으면, 내 게시글을  [여기](https://m-clark.github.io/posts/2019-05-14-shrinkage-in-mixed-models/) 에서 보라.
 
 
 
@@ -528,7 +528,8 @@ knitr::include_graphics('img/shrinkage_all.svg')
 
 ## 효과 시각화
 
-Now let's compare our predictions visually. First there is the linear regression fit. We assume the same starting point and trend for everyone.  If we add the conditional predictions that include the subject specific effects from the mixed model, we now can also make subject specific predictions, greatly enhancing the practical use of the model.  
+우리 예측값들을 시각적으로 비교해보자. 첫번째로 선형 회귀 적합이 있다. 시작점과 기울기가 모든 사람에게 있어 같다고 가정하자. 우리가 mixed model 에 subject specific 효과가 있는 조건부 예측을 더한다면, subject specific 예측을 할 수 있어서 모델의 실용성을 크게 증가시킨다. 
+
 
 ```{r visualize_mixed_fit, echo=F, eval=-1}
 going_down_now = factor(rep(coef(gpa_mixed)$student[, 'occasion'] < 0, e =6), 
@@ -559,7 +560,7 @@ gpa %>%
 
 <br>
 
-In contrast, the by-group approach is more noisy due to treating everyone independently.  Many more students are expected to have downward or flat trends relative to the mixed model. The mixed model meanwhile only had `r sum(coef(gpa_mixed)$student[,'occasion']<0)` trends estimated to be negative.
+반면에 그룹별 접근법은 모든 사람을 독립적으로 다루기 때문에 더 노이지하다. 학생이 더 많으면 mixed model 대비 기울기가 아래를 향하거나 평평해질 것이다. 하지만, mixed model 은 `r sum(coef(gpa_mixed)$student[,'occasion']<0)` 개의 기울기만 음수로 추정이 된다. 
 
 ```{r visualize_bygroup_fit, echo=FALSE, cache=FALSE}
 gpa_lm_fits_by_group = gpa %>% 
@@ -599,9 +600,9 @@ gpa %>%
 ```
 
 
-## Summary of Random Slopes
+## 요약
 
-At this point it might be clearer why some would call these *richly parameterized linear models*. Relative to a standard regression we get extra variance parameters that add to our understanding of the sources of uncertainty in the model, we can get the subjects specific effects, and their correlation, and use that information to obtain far better predictions.  What's not to like?
+이러한 것들을 왜 *richly parameterized linear models* 로 불리는지 감을 잡았을 것이다. 표준 회귀에 비해 모델의 불확실성 소스에 대한 우리의 이해에 더해지는 추가 분산 파라미터를 얻고, subject specific 효과와 correlation 을 얻고, 이 정보를 이용하여 훨씬 좋은 예측값을 얻을 수 있다.  좋아하지 않을 이유가 없다.
 
 ## Exercises for Random Slopes
 

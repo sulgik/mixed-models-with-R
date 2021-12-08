@@ -108,7 +108,7 @@ DT::datatable(pupils,
 <br>
 <br>
 
-우리의 mixed model 에서, 학업성취도에 대한 `sex`, 낮음에서 높음까지의 여섯 단계 변수인 사회경제적 지위, `ses` 효과를 살펴볼 것이다. 성취도 범위는 약 `r round(min(pupils$achievement))` 에서 `r round(max(pupils$achievement))` 까지이고, 평균은 `r round(mean(pupils$achievement), 1)`, 표준편차는 `r round(sd(pupils$achievement), 1)` 이다. 초등학교와 중학교의 클러스터링 고려할 것이다. <span class="pack">lme4</span> 문법으로 추가 구조를 넣는 것은, 지금은 그룹 인자가 두개[^crossed_notation]로 늘었지만, 앞에서 본 것 처럼 매우 쉽다.
+우리의 mixed model 에서, 학업성취도에 대한 `sex`, 낮음에서 높음까지의 여섯 단계 변수인 사회경제적 지위, `ses` 효과를 살펴볼 것이다. 성취도 범위는 약 `r round(min(pupils$achievement))` 에서 `r round(max(pupils$achievement))` 까지이고, 평균은 `r round(mean(pupils$achievement), 1)`, 표준편차는 `r round(sd(pupils$achievement), 1)` 이다. 초등학교와 중학교의 클러스터링 고려할 것이다. 지금은 그룹 인자가 두 개[^crossed_notation]라는 것만 제외하면, <span class="pack">lme4</span> 문법으로 추가 구조를 넣는 것은 앞에서 본 것 처럼 매우 쉽다.
 
 ```{r cross_classified, eval=1}
 pupils_crossed = lmer(
@@ -139,7 +139,7 @@ crossed_var_cor %>%
 
 분산 컴포넌트를 보면, 초등학교와 중학교가 전체 변동의 약 `r perc(sum(crossed_var_cor$variance[1:2])/sum(crossed_var_cor$variance), digits = 0)` 를 기여하고 있음을 알 수 있다. 학교에 기인한 변동의 대부분은 초등학교에서 온다.
 
-Random Effeict 를 조사하면, 두가지 세트의 효과를 가진다는 것을 볼 수 있다 - 초등학교에 해당하는 `r n_distinct(pupils$primary_school_id)` 개와 중학교에 해당하는 `r n_distinct(pupils$secondary_school_id)` 개 이다. 두 개다 학생-specific 예측에 포함된다.
+랜덤효과를 조사하면, 두가지 세트의 효과를 가진다는 것을 볼 수 있다 - 초등학교에 해당하는 `r n_distinct(pupils$primary_school_id)` 개와 중학교에 해당하는 `r n_distinct(pupils$secondary_school_id)` 개 이다. 두 개다 학생-specific 예측에 포함된다.
 
 ```{r crossed_re}
 glimpse(ranef(pupils_crossed))
@@ -168,16 +168,15 @@ p
 # {p1 + p2} 
 ```
 
-
-Note that we have the usual extensions here if desired.  As an example, we could also do random slopes for student level characteristics.
+우리는 원하는대로 모델을 확장할 수 있다는 것을 주목하라. 예를 들어, 학생레벨 특징에 대해 랜덤 기울기를 할 수도 있다.
 
 ### 계층구조
 
-Now that we have looked at cross-classified models, we can proceed to examine hierarchical cluster structuring.  In this situation we have clusters nested within other clusters, which may be nested within still other clusters.  A typical example might be cities within counties, and counties within states.
+cross-classified 모델을 살펴보았고 이제 계층적 클러스터 구조화하는 것으로 나아갈 수 있다. 이 경우, 클러스터들이 다른 클러스터 내부에 포함되고, 다른 클러스터도 다른 클러스터 내부에 포함되는 경우가 있다. 쉬운 예는 행정시 내부의 행정동과, 행정도 내부의 행정시들이다. 
 
-#### Example: Nurses and stress
+#### 예: 간호사와 스트레스
 
-For our demonstration we'll use the nurses data set. Here we are interested in the effect of a training program (`treatment`) on stress levels (on a scale of 1-7) of nurses.  In this scenario, nurses are nested within wards, which themselves are nested within hospitals, so we will have random effects pertaining to ward (within hospital) and hospital. For more information see the [appendix][Data].
+실례를 위해 간호사 데이터셋을 사용할 것이다. 교육프로그램 (`treatment`) 이 간호사의 스트레스 (1-7 점 점수) 에 주는 효과에 관심이 있다. 이 시나리오에서, 간호사는 병동 내에 포함되어있는데, 병동은 병원에 포함되어 있기 때문에 병동과 병원에 해당하는 랜덤효과를 가질 것이다. 더 자세한 내용은 [appendix][Data] 을 참고하라.
 
 ```{r nurses_data, echo=1}
 load('data/nurses.RData')
@@ -196,7 +195,7 @@ DT::datatable(nurses,
 <br>
 <br>
 
-For the model we examine effects of the treatment as well as several other covariates, at least one at each of the nurse, ward, and hospital levels. Again, when it comes to the fixed effects portion, you can simply think about that part as you would any standard regression, we just add covariates as theory/exploration would suggest.  To incorporate this type of random effects structure is not too different from the cross-classified approach, but does have a slight change to the syntax.
+이 모델의 처치 (treatment) 효과와 간호사, 병동, 병원 수준 각각 하나를 가지는 공변량을 측정한다. fixed effect 에 관해서는 다른 표준 회귀와 같이 이론/탐색법이 제안하는대로 공변량을 추가한다. 이러한 랜덤효과를 구현하는 것은 cross-classified 접근법과 크게 다르지 않지만 문법에 약간 다른 점이 있다.
 
 ```{r hierarchical, eval=1}
 nurses_hierarchical = lmer(
@@ -224,7 +223,7 @@ nurses_hierarchical %>%
 
 <br>
 
-As far as the fixed effects go, about the only thing that doesn't have a statistical effect is ward type[^signflip].  
+fixed 효과에 관해서는, 통계적인 효과가 없는 것은 병동유형(wardtype)이다 [^signflip].  
 
 <br>
 
@@ -236,7 +235,7 @@ hierarch_var_cor %>%
   kable_df()
 ```
 
-Concerning the random effects, there appears to be quite a bit of variability from ward to ward especially, but also hospital.  Recall that stress is a 7 point scale, so from ward to ward we can expect scores to bounce around about half a  point on average, which is quite dramatic in my opinion. Again we inspect it visually.
+랜덤효과에 관해서는, 병동 병동마다 변동성이 있고, 병원도 그렇다. 스트레스는 7 점 스케일이기 때문에 병동 병동마다 평균 약 0.5 점 정도 튈것으로 생각되는데, 이는 내 의견에는 꽤 극적이다. 시각적으로 살펴본다.
 
 ```{r hierarchical_re_plot, echo=FALSE}
 p = merTools::plotREsim(merTools::REsim(nurses_hierarchical)) +
@@ -247,7 +246,7 @@ p
 
 ### Crossed vs. nested
 
-The following shows the difference in the results from treating ward as a nested (within hospital) vs. crossed random effect. What do you notice is different?
+다음은 병동을 (병원 내) nested 로 처리하는것 대비 crossed 랜덤효과로 처리하는것의 차이점을 보여준다. 뭐가 다른 점으로 보이는가?
 
 ```{r crossed_vs_nested, echo=1:3}
 nurses_hierarchical = lmer(
@@ -271,27 +270,15 @@ crossed_var_cor %>%
   kable_df()
 ```
 
+없다? 좋다, 당신이 이상한 것이 아니다. 다음은 [lme4 text](http://lme4.r-forge.r-project.org/book/Ch2.pdf), section 2.2.1.1, 의 글인데, 시간을 써서 읽을 가치가 있다.
 
-Nothing? Good, you're not crazy.  Here's a quote from the [lme4 text](http://lme4.r-forge.r-project.org/book/Ch2.pdf), section 2.2.1.1, which is definitely worth your time.
-
-> The blurring of mixed-effects models with the concept of multiple,
-hierarchical levels of variation results in an unwarranted emphasis on 'levels'
-when defining a model and leads to considerable confusion. It is perfectly
-legitimate to define models having random effects associated with non-nested
-factors. The reasons for the emphasis on defining random effects with respect to
-nested factors only are that such cases do occur frequently in practice, and that
-some of the computational methods for estimating the parameters in the models
-can only be easily applied to nested factors. 
+> 혼합효과 모델과 다중 계층 수준을 헷갈리는 것은 모델을 정의할 때 수준에 보장되지 않는 강조를 낳고, 상당한 혼란을 야기한다. non-nested 요인과 관련된 랜덤 효과를 갖는 모델을 정의하는 것은 완벽하게 정당하다. nested 요인에 관해서만 랜덤효과를 정의하는 것을 강조하는 이유는 이러한 경우가 실생활에서 자주 일어나고 모델의 파라미터를 추정하는 계산법이 nested 요인에 쉽게 적용할 수 있기 때문이다.
 > 
-This is not the case for the methods used in the lme4 package. *Indeed there is
-nothing special done for models with random effects for nested factors*. When
-random effects are associated with multiple factors, exactly the same
-computational methods are used whether the factors form a nested sequence or are
-partially crossed or are completely crossed.
+이는 lme4 패키지에서 사용한 방법의 경우는 아니다. *사실 nested 요인에 랜덤효과를 주는 모델은 특별한 것이 없다*. 랜덤효과가 다중 요인과 연관될때, 요인들이 nested sequence 를 형성하는지, 부분적으로 crossed 인지, 완벽히 crossed 와 상관없이 같은 계산법이 사용된다.
 
-You might have noticed that we were using `wardid` rather than the `ward` grouping variable as in our first example. Even though every ward is unique, the `ward` column labels them with an arbitrary sequence starting with 1.  While this might seem natural, ward 1 in hospital 1 is not the same as ward 1 in hospital 2, so it's probably not a good idea to give them the same label. The `wardid` column properly distinguishes the wards with unique values (e.g. 11, 12).
+첫 예에서 그룹변수로 `ward` 가 아닌 `wardid` 를 사용했다는 것을 눈치챘는가? 모든 병동이 유일하지만, `ward` 열은 column labels them with an arbitrary sequence starting with 1 부터 시작하는 임의의 sequence 로 라벨링한다.  이것이 자연스러워 보일 수 있지만, hospital 1 의 ward 1 은 hospital 2 의 ward 1 과 같은 병동이 아니기 때문에 이들에게 같은 라벨을 주는 것은 좋은 방법이 아닐것이다. `wardid` 열은 적절하게 교유 값으로 병동들을 구분한다 (예. 11, 12).
 
-What would have happened had we used that variable as a crossed random effect?
+이 변수를 crossed random effect 로 사용한다면 어떤 일이 벌어질까?
 
 ```{r bad_cross, echo=1}
 nurses_crossed_bad_data = lmer(
@@ -304,14 +291,14 @@ extract_vc(nurses_crossed_bad_data, ci_level = 0) %>%
   kable_df()
 ```
 
-This is certainly not the result we want. The variance in `ward` is already captured by treatment and type. However, as demonstrated, this can be avoided with the proper syntax, or proper labeling in the data to allow unique clusters to have unique identifiers.
+아마 우리가 원하는 결과가 절대 아니다. `ward` 분산은 이미 treatment 와 type 에 의해 캡쳐됐다. 하지만, 보았듯이, 적절한 문법을 사용하거나, 고유 클러스터를 고유한 식별자를 갖도록 하는, 데이터내에서의 적절한 라벨링을 하면 피할 수 있다.
 
-See this [discussion also](https://stats.stackexchange.com/questions/228800/crossed-vs-nested-random-effects-how-do-they-differ-and-how-are-they-specified), as well as [this from the FAQ](https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#nested-or-crossed) from one of the <span class="pack">lme4</span> developers. Josh Errickson at CSCAR also has a nice [write-up with visual depiction](http://errickson.net/stats-notes/vizrandomeffects.html) of the underlying matrices of interest, which served as inspiration for some of the visualization in the next section.
+이 [논의](https://stats.stackexchange.com/questions/228800/crossed-vs-nested-random-effects-how-do-they-differ-and-how-are-they-specified) 와 <span class="pack">lme4</span> 개발자 중 한명이 쓴 [FAQ](https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#nested-or-crossed) 를 읽으라. CSCAR 의 Josh Errickson 도 좋은 [write-up with visual depiction](http://errickson.net/stats-notes/vizrandomeffects.html) of the underlying matrices of interest, which served as inspiration for some of the visualization in the next section.
 
 So there you have it.  When it comes to <span class="pack">lme4</span>, or mixed models more generally, crossed vs. nested is simply a state of mind (data)[^crossnest].
 
 
-## Residual Structure
+## 잔차 구조
 
 Sometimes we will want to obtain more specific estimates regarding the residual covariance/correlation structure. This is especially the case in the longitudinal setting, where we think that observations closer in time would be more strongly correlated than those further apart, or that the variance changes over time.  What does this model look like? 
 

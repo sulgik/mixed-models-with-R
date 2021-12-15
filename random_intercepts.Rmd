@@ -61,6 +61,8 @@ Mixed model 은 오랜동안 통계학 분야에서 사용되어 왔다. 예를�
 지금부터 우리는 대학 학점을 예측하는 요소를 조사할 것이다. 200 명의 학생을 각각 여섯 번 평가했다 (처음 3년간 모든 학기). 관측값들은 학생 내에서 클러스터되어 있다. 취업상황, 성별, 고등학교 학점과 같은 변수들도 있다. 이들 중 일부는 라벨되어 있고 수치형 형태로 되어 있다.  자세한 내용은 [appendix][Appendix] 을 참고하라.
 
 
+
+
 ```{r gpa_setup, echo=FALSE, eval=FALSE}
 # MC Note: either the job label is incorrect or this variable makes no sense. 
 # The label is 0,1:3, 4 or more hours (pt jobs for less than 4 hours? per day?).

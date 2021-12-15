@@ -376,13 +376,13 @@ $$\Sigma =
 \end{array}\right]$$
 <br>
 
-This represents a covariance structure of <span class="emph">compound symmetry</span>. It is the default in most mixed model settings, and the same as what is shown visually above. Now let's start to think about other types of covariance structures. 
+<span class="emph">compound symmetry</span> 공분산 구조를 나타낸다. 대부분의 mixed model 세팅에서 기본값인데, 앞에서 시각적으로 본 것과 같은 것이다. 이제 다른 종류의 공분산 구조들도 생각해보자.
 
-Consider the following model for an individual and just three time points to keep things simpler to show.
+간단하게 살펴보기 위해 개인에 대한 다음의 모형과 세개의 시점을 살펴보자.
 
 $$\boldsymbol{y} \sim \mathcal{N}(\boldsymbol{\mu}, \boldsymbol{\Sigma})$$
 
-So we have three observations of $y$ that are multivariate normally distributed.  The mean $\mu$ is a function of covariates just like in standard regression.
+정규 분포를 따르는 $y$ 세 관측값이 있다. 평균 $\mu$ 는 표준 회귀에서 처럼 공변량들의 함수이다.
 
 $$\mu = b_0 + b_1\cdot \mathrm{time} + b_2\cdot x_1 ...$$
 

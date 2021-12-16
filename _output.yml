@@ -23,7 +23,7 @@
         collapse: section
         scroll_highlight: yes
         before: |
-          <li class='before'><a href="./">Mixed Models with R</a></li>
+          <li class='before'><a href="./">R 로 하는 Mixed Model</a></li>
         after: |
          <li class='after'">
             <a href="https://m-clark.github.io/">

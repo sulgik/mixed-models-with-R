@@ -7,12 +7,13 @@ knitr::opts_chunk$set(
 ```
 
 
-# Bayesian Approaches
+# 베이지언 접근법
 
 <img src="img/priorpost.png" style="display:block; margin: 0 auto; width:50%">
 
-With mixed models we've been thinking of coefficients as coming from a distribution (normal).  While we have what we are calling 'fixed' effects, the distinguishing feature of the mixed model is the addition of this random component.  Now consider a standard regression model, i.e. no clustering.  You can actually do the same thing, i.e. assume the coefficients are not fixed, but random.  In this sense, the goal is to understand that distribution, and focus on it, rather than just the summary of it, e.g. the mean.  However, the mean (or other central tendency) of that distribution can be treated like you've been doing the fixed effects in your standard models.
+mixed model 에서 우리는 계수들이 (정규)분포에서 온 것으로 생각하고 있다. 우리가 'fixed' 효과라고 부르고 있지만, mixed model 의 다른 것과 다른 특징은 랜덤 컴포넌트를 추가하는 것이다. 이제 표준 회귀모델, 즉, 클러스터링 없는 모델을 고려하자. 같은 것을 할 수 있다, 즉, 계수가 고정되지 않고 랜덤이다. 몾표는 분포의 요약, 예를 들어 평균이 아니라 분포를 이해하고 이에 집중하는 것이다. 그러나 이 분포의 평균 (혹은 다른 central tendancy)은 표준 모델에서 fixed 효과에 대해 하는 것과 같이 취급할 수 있다.
 
+따라서 
 Thus you can use how you've been thinking about the random effects in mixed models as a natural segue to the Bayesian approach, where all parameters are random draws from a distribution.  Using Bayesian versions of your favorite models takes no more syntactical effort than your standard models.  The following is a standard linear regression and a mixed model in the <span class="pack">brms</span> package, but would likewise be the same for <span class="pack" style = "">rstanarm</span>.
 
 ```{r syntax, eval=FALSE}

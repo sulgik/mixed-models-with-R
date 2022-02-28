@@ -1,4 +1,4 @@
-# Going Further
+# 심화
 
 <div style = 'text-align: center'>
 <i class="fas fa-rocket fa-5x" style = 'color:#990024;'></i>
@@ -72,7 +72,7 @@ Often people will assume *latent* clusters of individuals within the data, with 
 
 
 
-## Nonlinear Mixed Effects Models
+## 비선형 Mixed Effects Models
 
 Earlier we used the <span class="pack">nlme</span> package.  The acronym stands for **nonlinear** mixed effects models.  In this case, we are assuming a specific functional form for a predictor.  A common example is a logistic growth curve[^lgc], and one could use a function like <span class="func">SSlogis</span>.
 

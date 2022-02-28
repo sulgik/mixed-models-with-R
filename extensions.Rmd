@@ -452,9 +452,9 @@ $$\Sigma = \sigma^2
 
 ### 이종분산 
 
-다른 많은 mixed model 패키지들은 잔차 공분산 구조를 모델링해 주지만[^lmerho], <span class="pack">lme4</span>는 적어도 [not in a straightforward fashion](https://bbolker.github.io/mixedmodels-misc/notes/corr_braindump.html)으로 해주지는 않는다. 사실 기본 R 설치하면 함께 오는 두 개의 패키지(<span class="pack">mgcv</span>, <span class="pack">nlme</span>)는 공분산구조 모델링을 해 준다.
+다른 많은 mixed model 패키지들은 잔차 공분산 구조를 모델링해 주지만[^lmerho], <span class="pack">lme4</span>는 적어도 [직관적인 방법은 아니다](https://bbolker.github.io/mixedmodels-misc/notes/corr_braindump.html). 사실 기본 R 설치하면 함께 오는 두 개의 패키지(<span class="pack">mgcv</span>, <span class="pack">nlme</span>)는 공분산구조 모델링을 해 준다.
 
-<span class="pack">nlme</span> 패키지는 *매우* 다르지는 않지만 다른 랜덤효과 specification 을 할 것이다. 또한, 이종분산을 추정하기 위해 `weights` 인수를 추가하여 사용할 것이다. 아래는 각 occasion 의 시점이 고유의 추정값을 갖도록 한다.
+<span class="pack">nlme</span> 패키지는 *아주* 다르지는 않지만 다른 랜덤효과 specification 을 할 것이다. 또한, 이종분산을 추정하기 위해 `weights` 인수를 추가하여 사용할 것이다. 아래는 각 학기의 시점에서 고유 추정값을 갖도록 한다.
 
 
 ```{r heterovar, echo=1:5, eval=-5}
@@ -478,7 +478,9 @@ vc %>%
 ```
 
 
-여기서 우리는 이전 것과 같은 것을 얻었다. 별로 재미없는 부분이다. 이 예에서 우리가 관심있는 값들, 즉 학기마다의 분산에 대해, <span class="pack">nlme</span> 는 출력값이 추정을 위한 형태이지, 보고를 위한 형태가 아니므로, 처음에 이해하는데 쉽지 않게 만든다. 분산들은 첫번째 분산 추정값인 랜덤효과 부분의 보고된 잔차분산에 상대하여 스케일된다. 또한 이 값들은 분산 스케일이 아닌 표준편차스케일이다. 기본 출력디스플레이에서 이 경우 시간에 따라 분산이 감소하는 것을 볼 수 있지만, 실제 값은 제공되지 않는다.
+결과가 이전과 같게 나왔다. 별로 재미없는 부분이다. 
+이 예에서 우리가 관심있는 값, 즉 학기마다의 분산에 대해, <span class="pack">nlme</span> 는 출력값이 추정을 위한 형태이지, 보고를 위한 형태가 아니므로, 처음에 이해하는데 쉽지 않게 만든다. 
+분산들은 첫번째 분산 추정값인 랜덤효과 부분의 보고된 잔차분산에 상대하여 스케일된다. 또한 이 값들은 분산 스케일이 아닌 표준편차스케일이다. 기본 출력디스플레이에서 이 경우 시간에 따라 분산이 감소하는 것을 볼 수 있지만, 실제 값은 제공되지 않는다.
 
 ```{r heterovar_variances}
 summary(heterovar_res$modelStruct)
@@ -668,12 +670,11 @@ corr_res2$obj$env$report(corr_res2$fit$parfull)$corr[[2]][2, 1]
 
 ## 일반화 선형 Mixed Model
 
-일반화 선형 모델이 표준 선형 모델을 확장한 것이듯이, (선형) mixed model 을 <span class="emph">일반화 선형 mixed model</span> 로 일반화할 수 있다. 더 나아가서, 다른 패키지들이 잠재적으로 여러 반응 분포를 허용하는 것 같이 우리도 exponential family 에만 국한되는 것은 아니다.
+표준 선형모델을 확장하여 일반화 선형 모델을 만들었듯이, (선형) mixed model 을 <span class="emph">일반화 선형 mixed model</span> 로 일반화할 수 있다. 더 나아가서, 다른 패키지들이 여러 반응 분포를 허용하는 것 같이 우리도 exponential family 에만 국한되는 것은 아니다.
 
 우리는 mixed model 세팅에서 로지스틱 회귀를 살펴볼 것이다. Speed dating 데이터셋을 사용할 것이다. 스피드 데이팅 이벤트에서 각 참가자들은 다른 참가자들과 열 번의 짧은 데이트 (4분)를 하도록 실험이 할당했다. 각 데이트에서 각 사람은 다른 사람을 여섯 속성 (attractive, sincere, intelligent, fun, ambitious, shared interests)에 대해 10-점 스케일로 평가하고 상대를 다시 볼 건지 적도록 했다.
 
-
-Our target variable is whether the participant would be willing to date the person again (`decision`).  To keep things simple, the predictors will be limited to the sex of the participant (`sex`), whether the partner was of the same race (`samerace`), and three of the attribute ratings the participant gave of their partner- attractiveness (`attractive`), sincerity (`sincere`), and intelligence (`intelligent`). The latter have been scaled to have zero mean and standard deviation of .5, which puts them on a more even footing with the binary covariates (`_sc`)[^scalecontbin].
+목표 변수는 참석자들이 상대를 다시 데이트할 것인지 아닌지 (`decision`) 이다. 간단하게 해서, 설명변수는 참석자들의 성별(`sex`), 파트너가 같은 인종인지 (`samerace`), 그리고 참석자가 상대방의 매력 (`attractive`), 진실성 (`sincere`), 지능 (`intelligence`) 점수에만 국한할 것이다. 후자는 평균 0 과 표준편차 .5 으로 스케일되는데, 이는 binary 공변량과 공평하게 만든다. (`_sc`)[^scalecontbin].
 
 ```{r speed_dating, echo=FALSE, eval=FALSE}
 speed_dating0 = readr::read_csv('data/raw_data/ARM_Data/Speed Dating Data.csv')
@@ -759,7 +760,7 @@ extract_fixed_effects(sd_model) %>%
 ```
 <br>
 
-The fixed effects results are as expected for the attributes, with attractiveness being a very strong effect in particular.  In addition, having a partner of the same race had a positive effect, while sex of the participant was statistically negligible.  You are free to exponentiate the coefficients to get the odds ratios if desired, just as you would with standard logistic regression.
+fixed effect 결과들은 각 attributes 에 관해 예상한 대로인데, 매력이 특히 매우 강한 효과를 갖는다. 또한, 상대가 같은 인종인 것은 양의 효과가 있는데 반해 성별은 통계적으로 유의하지 않았다. 원한다면 로지스틱 회귀에서와 같이 계수에 exponent 함수를 취하여 오즈비를 구할 수 있다.
 
 <br>
 
@@ -771,7 +772,9 @@ extract_vc(sd_model, ci_level = 0) %>%
 
 <br>
 
-For the variance components, notice that there is no residual variance. This is because we are not modeling with the normal distribution for the response, thus there is no $\sigma$ to estimate.  However, the result suggests that there is quite a bit of variability from person to person.
+분산요소에 대해 residual 분산이 없는 것을 주목하라. 
+이는 반응변수의 정규 분표로 모델링하는 것이 아니기 때문에, 추정해야 할 $\sigma$ 가 없다. 
+하지만, 결과는 사람마다 변동성이 꽤 있다는 것을 이야기한다.
 
 
 ## Exercises for Extensions

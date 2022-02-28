@@ -6,14 +6,17 @@ knitr::opts_chunk$set(
 )
 ```
 
-# More Random Effects
+# 추가 Random Effect
 
 앞에서 랜덤 절편을 살펴보았지만, 클러스터마다 어떤 관측값이나 낮은 레벨의 covariate 효과도 변하게 할 수 있다.
+이는 효과가 다른 관측값의 수준/값에 따라 변하도록 하는 *interaction(교호작용)* 개념과 동일하다.
 
-## Application
+## 적용
 
-GPA 데이터에 돌아가서, 앞선 시각화를 상기해 보자. 학생들 사이의 차이를 강조하기 위해 애니메이션으로 표현해 보았다.
-
+GPA 데이터에 돌아가서, 앞선 시각화를 상기해 보자. 
+학생들 사이의 차이를 강조하기 위해 애니메이션으로 표현해 보았다.
+시간에 따라 일반적으로 증가하지만, 어떤 학생은 상대적으로 평평하거나 일직선이 아니다. 
+이러한 현상을 어떻게 포착할 수 있을까?
 
 ```{r spaghetti2-old, echo=FALSE, eval=FALSE}
 set.seed(1234)
@@ -86,7 +89,8 @@ knitr::include_graphics('img/gpa_anim.gif')
 
 
 <br>
-절편뿐만 아니라 시간에 따른 변화도 학생에 따라 변할 수 있다고 가정해 보자. <span class="pack">lme4</span> 를 사용하면 바로할 수 있다.
+이 문제를 해결하기 위해, 절편뿐만 아니라 시간에 따른 변화도 학생에 따라 변할 수 있다고 가정해 보자.
+<span class="pack">lme4</span> 를 사용하면 바로할 수 있다.
 
 ```{r random_slope, eval=FALSE}
 gpa_mixed =  lmer(gpa ~ occasion + (1 + occasion | student), data = gpa)
@@ -120,11 +124,21 @@ extract_vc(gpa_mixed, ci_level = 0) %>%
 #   kable_df()
 ```
 
-이전에서처럼, 0 을 첫 학기로 하고 있으므로, 절편은 첫 학기의 평균 학점을 의미하게 된다. 학기 계수는 한 학기의 학점변화량을 의미한다는 것에는 달라진 점이 없다. 모형의 fixed effect 부분에 변화가 없으므로, 값은 전과 같게 된다. 
+이전에서처럼, 0 을 첫 학기로 하고 있으므로, 절편은 첫 학기의 평균 학점을 의미하게 된다.
+이전과 같이 학기 계수는 한 학기의 학점변화량을 의미한다.
+모형의 fixed effect 부분에 변화가 없으므로, 값은 전과 같게 된다. 
 
-절편 분산은 시작학기의 평점이 학샘아다 얼마나 차이가 나는지를 의미한다. 학기 효과의 분산은 비교할 것이 없는 것 같지만, 기울기는 절편보다 더 스케일에 큰 차이가 있다. 학기에 대한 평균 기울기, 즉 fixed 효과는 `r round(fixef(gpa_mixed)[2], 2)` 이지만, 학생마다 절반 정도 차이가 난다. 따라서 대부분의 학생들이 0 을 가지는 flat effect 에서 population 평균의 두배 이상의 값 사이의 한 값을 가지리라 예상할 수 있다[^sdslopes]. 
+절편 분산은 시작학기의 평점이 학생마다 얼마나 차이가 나는지를 의미한다. 
+학기 효과의 분산은 비교할 것이 없는 것 같지만, 기울기는 절편보다 더 스케일에 큰 차이가 있다. 
+학기에 대한 평균 기울기, 즉 fixed 효과는 `r round(fixef(gpa_mixed)[2], 2)` 이지만, 학생마다 절반 정도 차이가 난다. 
+따라서 대부분의 학생들이 0 을 가지는 flat effect 에서 population 평균의 두배 이상의 값 사이의 한 값을 가지리라 예상할 수 있다[^sdslopes]. 
 
-절편과 기울기의 correlation 은 다른 흥미로운 포인트이다. 우리 경우는 `r data.frame(VarCorr(gpa_mixed)) %>% slice(3) %>% select(sdcor) %>%  round(2)` 이다. 꽤 작은 편이지만 다른 correlation 과 해석은 비슷하다. 이 경우 절편값이 작을수록 기울기가 커지게 된다. 일반적으로 사람들 성적이 좋아지고 잘 못하는 사람은 개선될 여지가 더 많을 것이라는 것은 직관적이다. 하지만, 매우 약하고, 실제로는 여기에 큰 비중을 둘 필요가 없다.
+절편과 기울기의 correlation 은 다른 흥미로운 포인트이다. 
+우리 경우는 `r data.frame(VarCorr(gpa_mixed)) %>% slice(3) %>% select(sdcor) %>%  round(2)` 이다. 
+꽤 작은 편이지만 다른 correlation 과 해석은 비슷하다. 
+이 경우 절편값이 작을수록 기울기가 커지게 된다. 
+일반적으로 사람들 성적이 좋아지고 잘 못하는 사람은 개선될 여지가 더 많을 것이라는 것은 직관적이다. 
+하지만, 매우 약하고, 실제로는 여기에 큰 비중을 둘 필요가 없다.
 
 
 ## 개별 회귀모델과 비교
@@ -184,7 +198,8 @@ ggsave('img/shrinkage_main.svg')
 knitr::include_graphics('img/shrinkage_main.svg')
 ```
 
-여기에서 우리는 mixed model 절편이 일반적으로 극단적이지 않음을 볼 수 있다, 즉, 분포 꼬리가 전체 효과쪽으로 당겨졌다. 기울기들도 마찬가지이다. 두 경우다 mixed model 은 by-group 추정치를 감소시켰는데, 다르게 취급했다면 이러한 시나리오에서 과적합되었을 것이다. 이러한 <span class="emph">regularizing</span> 효과는 mixed model[^pool]을 사용할 때 얻을 수 있는 또다른 보너스이다. 그룹마다 관측값이 많지 않고, 랜덤이팩트의 추정 분산이 작을 때 이러한 일이 일어난다. 다른 말로 하면, 그룹마다 정보가 적거나, 관측값 분산에 비해 그룹레벨 분산이 상대적으로 작으면, mixed model 은 group-specific effect 가 전체 population effect 에 가까운 값으로 제공할 것이다. 이러한 맥락에서 mixed model group 계수들은 우리가 모른다는 것을 더 잘 반영한다. 반대로, with more pronounced group effec, 전체 효과에 대한 우리의 불확실성은 증가한다.
+여기에서 우리는 mixed model 절편이 일반적으로 극단적이지 않음을 볼 수 있다, 즉, 분포 꼬리가 전체 효과쪽으로 당겨졌다. 
+기울기들도 마찬가지이다. 두 경우다 mixed model 은 by-group 추정치를 감소시켰는데, 다르게 취급했다면 이러한 시나리오에서 과적합되었을 것이다. 이러한 <span class="emph">regularizing</span> 효과는 mixed model[^pool]을 사용할 때 얻을 수 있는 또다른 보너스이다. 그룹마다 관측값이 많지 않고, 랜덤이팩트의 추정 분산이 작을 때 이러한 일이 일어난다. 다른 말로 하면, 그룹마다 정보가 적거나, 관측값 분산에 비해 그룹레벨 분산이 상대적으로 작으면, mixed model 은 group-specific effect 가 전체 population effect 에 가까운 값으로 제공할 것이다. 이러한 맥락에서 mixed model group 계수들은 우리가 모른다는 것을 더 잘 반영한다. 반대로, with more pronounced group effec, 전체 효과에 대한 우리의 불확실성은 증가한다.
 
 다음은 앞서 보았던 GPA 모델의 결과에 기반한 시뮬레이션 데이터의 다양한 세팅 아래에서 비슷한 데이터에 어떤 일들이 일어나는 지를 보여준다. 맨 왼쪽은 현재 데이터 세팅을 바로 보여준다. 그 다음, 원 결과를 따라 네가지 세팅이 있다. 처음은 학생마다 훨씬 많은 측정값이 있다면 어떤 일이 일어나는지를 보여준다. 다음은, 절편과 기울기 분산을 증가하고 잔차분산을 감소시키지만 샘플 사이즈를 원 데이터와 같게 유지한다. 두 경우 다 mixed model 의 regulizaing effect 가 더 작다. 랜덤 계수들은 개별 회귀 결과와 매우 유사하다. 그리고, 데이터를 동일하게 유지하지만, 학생당 4 관측값만 있을 때, 학생당 결과에서 변동성이 더 커서 mixed model 에서 shrinkage 가 상대적으로 덜 일어난다. 마지막으로 학생당 occasions 숫자를 더하지만 (10), 시간이 흐르면서 유실도 있어서 대략 데이터 양은 비슷하지만, 불균형이다. 이 주제에 대한 더 보고 싶으면, 내 게시글을  [여기](https://m-clark.github.io/posts/2019-05-14-shrinkage-in-mixed-models/) 에서 보라.
 

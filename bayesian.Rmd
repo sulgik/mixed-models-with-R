@@ -7,14 +7,20 @@ knitr::opts_chunk$set(
 ```
 
 
-# 베이지언 접근법
+# 베이지언 방법
 
 <img src="img/priorpost.png" style="display:block; margin: 0 auto; width:50%">
 
-mixed model 에서 우리는 계수들이 (정규)분포에서 온 것으로 생각하고 있다. 우리가 'fixed' 효과라고 부르고 있지만, mixed model 의 다른 것과 다른 특징은 랜덤 컴포넌트를 추가하는 것이다. 이제 표준 회귀모델, 즉, 클러스터링 없는 모델을 고려하자. 같은 것을 할 수 있다, 즉, 계수가 고정되지 않고 랜덤이다. 몾표는 분포의 요약, 예를 들어 평균이 아니라 분포를 이해하고 이에 집중하는 것이다. 그러나 이 분포의 평균 (혹은 다른 central tendancy)은 표준 모델에서 fixed 효과에 대해 하는 것과 같이 취급할 수 있다.
+mixed model 에서는 계수들이 분포에서 온 것으로 가정한다. 
+Mixed model 에는 'fixed' 효과도 있지만, 랜덤 컴포넌트가 있다는 것이 큰 특징이다. 
+이제 표준 회귀모델, 즉, 클러스터링 없는 모델을 고려하자. 
+이 모델로도 같은 것을 할 수 있다, 즉, 계수가 고정되지 않고 랜덤이다. 
+목표는 분포의 요약, 예를 들어 평균이 아니라 분포를 이해하고 이에 집중하는 것이다. 이 분포의 평균 (혹은 다른 central tendancy)에 대해서, 표준 모델에서 fixed 효과에 대해 하는 것과 같이 취급할 수 있다.
 
-따라서 
-Thus you can use how you've been thinking about the random effects in mixed models as a natural segue to the Bayesian approach, where all parameters are random draws from a distribution.  Using Bayesian versions of your favorite models takes no more syntactical effort than your standard models.  The following is a standard linear regression and a mixed model in the <span class="pack">brms</span> package, but would likewise be the same for <span class="pack" style = "">rstanarm</span>.
+따라서 mixed model 에서 랜덤효과에 관해 생각한 바를 베이지언 방법론에 관한 자연스러운 변환버전처럼 사용할 수 있다. 
+베이지언 방법에서 모든 파라미터는 분포에서 랜덤 추출한다.
+가장 좋아하는 모델의 베이지언 버전을 사용하는 것은 표준모델의 문법 이외의 노력이 필요하지 않다.
+다음은 <span class="pack">brms</span> 패키지에서 표준선형회귀와 mixed model 이지만, <span class="pack" style = "">rstanarm</span> 에서와 같다.
 
 ```{r syntax, eval=FALSE}
 brms::brm(gpa ~ occasion, data = gpa)
@@ -24,26 +30,44 @@ rstanarm::stan_lm(gpa ~ occasion, data = gpa)
 rstanarm::stan_lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 ```
 
-So running the Bayesian models is not only as easy, the syntax is identical!  Furthermore, just like mixed models allowed you to understand your data more deeply, the Bayesian models have the potential to do the same. Even the probabilities and intervals make more sense.  With <span class="pack">rstanarm</span> and especially <span class="pack">brms</span>, you can do fairly complex models, taking you further than the standard mixed model packages, all without learning how to code the models explicitly in Stan, the probabilistic programming language that both are based on.  However, when you get to that point, the modeling possibilities are only limited by your imagination.
+베이지언 모델을 실행하는 것은 쉬울 뿐 아니라 문법적으로 동일하다!
+mixed model 을 사용하면 데이터를 더 깊이 이해할 수 있듯이, 베이지언 모델도 이러한 잠재력이 있다. 
+이 모델에서 산출되는 확률과 구간은 더 의미가 있다.
+<span class="pack">rstanarm</span> 과 <span class="pack">brms</span> 을 사용하면, 확률적 프로그래밍 언어인 Stan 으로 모델코딩하는 법을 배우지 않고도 표준 mixed model 패키지보다 복잡한 모델링을 할 수 있다.
+모델링 확률은 상상에 의해서만 제약을 받는다.
 
-You will have to learn a new inferential framework, as well as some of the nuances of the Markov Chain Monte Carlo (MCMC) approach.  But you may be surprised to find that the basics come more easily than you would anticipate.  Using tools like <span class="pack">brms</span> and related make it easier than ever to dive into Bayesian data analysis, and you've already been in a similar mindset with mixed models, so try it out some time.  I have an [introduction to Baysian analysis with Stan](https://m-clark.github.io/bayesian-basics/), and a bit more on the Bayesian approach and mixed models in this [document](https://m-clark.github.io/docs/mixedModels/mixedModels.html#mixed_model_7:_bayesian_mixed_model).
+MCMC 방법 뿐만 아니라, 새로운 추론 프레임워크를 배워야 할 것이다.
+하지만, 기초사항이 생각보다 훨씬 쉽다는 것을 알면 놀랄 것이다.
+<span class="pack">brms</span> 과 관련된 도구들을 사용하면 베이지언 데이터 분석으로 깊이 들어가는 것보다 훨씬 쉽게 될 것이고, mixed model 과 같은 유사한 것을 보았다. 따라서, 언제 한번 시도해 보길 바란다.
+
+[introduction to Baysian analysis with Stan](https://m-clark.github.io/bayesian-basics/) 에서 소개를 볼 수 있고, 이 [문서](https://m-clark.github.io/docs/mixedModels/mixedModels.html#mixed_model_7:_bayesian_mixed_model) 에서 베이지언 방법론과 mixed model 에 관해 조금 더 볼 수 있다.
 
 
 ## Priors
 
-The following information about priors assumes some background knowledge of Bayesian analysis, particularly for regression models. The Stan development group offers recommendations [here](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations), so refer to it often.  Note that Stan does not require conjugacy, in contrast to tools such as BUGS/JAGS.  This frees one up to use other prior distributions as they see fit. Generally though, using some normal distribution for the fixed effects, and the package defaults for variance components, should suffice for the standard models we've been discussing.
+Priors 에 관한 다음 정보는 베이지언 분석, 특별히 회귀모델에 관한 배경지식을 가정한다.
+Stan 개발 그룹은 [여기](https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations) 에 추천을 제공하기 때문에 자주 살펴보길 바란다.
+Stan 은 conjugacy 를 필요로 하지 않는다는 점이 BUGS/JAGS 같은 도구와 대비된다.
+알맞은 다른 prior 분포를 사용할 수 있다.
+하지만, 일반적으로 fixed 효과에 대한 정규 분포와 variance components 에 관한 패키지 defaults 를 사용하는 것은 우리가 논의한 표준 모델에 관해 충분할 것이다.
 
 
-### Fixed effects
+### Fixed 효과
 
-For fixed effect regression coefficients, normal and student t would be the most common prior distributions, but the default <span class="pack">brms</span> (and <span class="pack">rstanarm</span>) implementation does not specify any, and so defaults to a uniform/improper prior, which is a poor choice.  You will want to set this for your models. Note that scaling numeric predictors benefits here just like it does with <span class="pack">lme4</span>, and makes specifying the prior easier as well.
+Fixed 효과 회귀계수에 관해, 정규 그리고 student t 분포는 가장 보편적인 prior 분포이지만, default <span class="pack">brms</span> (와 <span class="pack">rstanarm</span>) 구현은 아무 것도 명시하지 않기 때문에, 좋은 선택이 아닌 uniform/improper prior 를 기본값으로 한다.
+모델에 이를 설정해야 할 것이다.
+여기에서 수치형 설명변수를 스케일링하면 <span class="pack">lme4</span> 에서와 같이 이점이 있고 prior 를 명시하기 쉬워지기도 한다.
 
 
 ### Variance components
 
-In Bayesian linear mixed models, the random effects are estimated parameters, just like the fixed effects (and thus are not BLUPs). The benefit to this is that getting interval estimates for them, or predictions using them, is as easy as anything else.  Typically priors for variance components are half-t for the variances, as the values can only be positive, but beyond that, e.g. intercept and slope correlations, you can again just rely on the package defaults.
+베이지언 선형 mixed model 에서, 랜덤효과는 fixed 효과와 같이 추정되는 파라미터이다 (따라서 BLUPs 가 아닙니다).
+이것의 장점은 구간 추정하는 것이나 이를 이용한 예측값을 얻는 것이 다른 것과 같이 쉽다는 것이다.
+일반적으로 variance component 에 관한 prior 는 half-t 인데, 값들이 양수만 될 수 있기 때문이다. 
+이 밖에도, 예를 들어, 절편과 기울기 상관계수 등에 관해서는 패키지 기본값을 사용하면 된다.
 
-To make this more explicit, let's say we have a situation with random intercepts and slopes, with variances 1 and .1 respectively, with a .3 correlation.  The random effects, say for 10 clusters, would come from a multivariate distribution as follows.
+더 명시적으로 하면, 랜덤 절편과 기울기 분산이 각각 1 과 .1 이고 상관계수가 .3 인 경우를 가정해 보자.
+랜덤 효과, 예를 들어 10 클러스터는 다음과 같이 다변량 분포로부터 올 수 있다.
 
 ```{r demo-re}
 re_cov = matrix(c(1, .3, .3, .1), ncol = 2)
@@ -52,12 +76,13 @@ re_cov
 mvtnorm::rmvnorm(10, mean = c(0, 0), sigma = re_cov)
 ```
 
-The priors in the model would regard the correlation matrix, and the estimated random effects would be added to the linear predictor, as we showed in the [beginning][Initial depiction].
+모델의 prior 는 상관 행렬과 추정을 regard 하고 추정된 랜덤 효과가 [앞][첫모델] 에서 본 것 같이 선형 설명변수에 추가된다.  
 
 
 ## Demonstration
 
-Let's return to our GPA model. I will add the priors for the fixed effects, and an option to speed computation by parallelizing the chains.
+GPA 모델로 돌아가봅시다.
+fixed 효과 prior 를 추가하고 체인을 병렬화하여 계산을 빠르게 하는 옵션을 추가할 것이다.
 
 ```{r brms-gpa, results='hide'}
 library(brms)
@@ -76,14 +101,15 @@ bayesian_mixed = brm(
 summary(bayesian_mixed)
 ```
 
-
-Compare to our previous results.
+이전의 결과와 비교해 보라.
 
 ```{r old-results}
-summary(gpa_mixed, cor= F)
+summary(gpa_mixed, cor = F)
 ```
 
-Aside from additional diagnostic information, the Bayesian results are essentially the same, but now we can continue to explore the model. The <span class="pack" style = "">brms</span> package tries to use the same function names as <span class="pack" style = "">lme4</span> where possible, so <span class="func" style = "">ranef</span>, <span class="func" style = "">fixef</span>, <span class="func" style = "">VarCorr</span>, etc. are still in play.  However, you can still use my functions for standard models, which will return tidy data frames.
+베이지언 결과는 근본적으로 같지만, 추가적으로 진단 정보를 주는 것 외에도 이제 모델을 탐색할 수 있다.
+<span class="pack" style = "">brms</span> 패키지는 가능한 한 <span class="pack" style = "">lme4</span> 와 같은 함수 이름을 사용하려고 하기 때문에 <span class="func" style = "">ranef</span>, <span class="func" style = "">fixef</span>, <span class="func" style = "">VarCorr</span> 등을 사용할 수 있다.
+하지만, 표준모델에 관한 내 함수를 사용할 수 있는데, 이는 타이디한 데이터프레임을 반환한다.
 
 ```{r brms-ranef}
 # examine random effects with the usual functions, not too tidy
@@ -91,19 +117,24 @@ Aside from additional diagnostic information, the Bayesian results are essential
 mixedup::extract_random_effects(bayesian_mixed)
 ```
 
-However, we also have some nice plotting functions.  Here I plot the occasion effect, as well as the estimated predictions from the model vs. our observed GPA values.
+하지만, 좋은 플롯팅 함수도 있다.
+여기 학기효과 뿐만 아니라 모델에서 추정된 예측값 vs. 관측한 GPA 값을 플롯한다.
 
 ```{r brms-cond-pp}
 conditional_effects(bayesian_mixed)
 pp_check(bayesian_mixed)
 ```
 
-There is a lot more modeling we can do here as we'll see shortly, but it's important to know you can do the basics easily.  
+곧 보겠지만 훨씬 많은 모델링을 여기서 할 수 있지만, 기초적인 것을 더 쉽게 할 수 있다는 것을 아는 것이 더 중요한다.
 
 
-## Example Models
+## 예제 모델
 
-In the following I attempt to show a wide variety of (mixed) models one could do with <span class="pack">brms</span>.  Typically is shown the modeling function <span class="func">brm</span>, where the syntax is <span class="pack">lme4</span>-like.  Elsewhere I use the specific <span class="func">bf</span> function, which allows one to build a potentially complicated formula as a separate object to be used in the eventual modeling function.  For example.
+이제 <span class="pack">brms</span> 에서 사용할 수 있는 다양한 (mixed) 모델을 보겠다.
+모델링 함수 <span class="func">brm</span> 을 볼 것이데, 문법은 <span class="pack">lme4</span>와 비슷하다.  
+
+특별한 <span class="func">bf</span> 함수를 사용하는데, 복잡한 공식을 별개의 객체로 만들어 최종 모델링 함수에서 사용하는 것이 가능하다.
+예를 들어,
 
 ```{r brms-basics, eval=FALSE}
 brm(y ~ x, data = mydata, family = gaussian)
@@ -114,32 +145,32 @@ brm(f, ...)
 ```
 
 
-#### Standard mixed models
+#### 표준 mixed model
 
-Random intercept.
+랜덤 절편.
 
 ```{r brms-ranint, eval=FALSE}
 brm(y ~ x + z + (1 | g))
 ```
 
-Random intercept and random coefficient for `x`.
+랜덤 절편 및 `x` 에 대한 랜덤 계수.
 
 ```{r brms-ranslope, eval=FALSE}
 brm(y ~ x + z + (1 + x | g))
 ```
 
-Multiple grouping structure/random effects.
+다중 그룹화 구조/랜덤 효과.
 
 ```{r brms-ranef-more, eval=FALSE}
 brm(y ~ x + z + (1 | g1)  + (1 | g2))
-brm(y ~ x + z + (1 | g1 + g2))  # same thing
+brm(y ~ x + z + (1 | g1 + g2))  # 같음
 
 brm(y ~ x + z + (1 | g1)  + (1 | g1:g2))
 ```
 
-#### Other distributional families
+#### 기타 분포 패밀리
 
-Multiple types of ordinal models including 'generalized' or 'varying coefficients' models that include category specific effects.
+범주형 특수 효과를 포함하는 '일반화' 혹은 '변화하는 계수' 모델을 포함하는 다양한 유형의 일반 모델.
 
 ```{r brms-ordinal, eval=FALSE}
 brm(y ~ x + z + (1 | g), family = cumulative)
@@ -150,13 +181,13 @@ brm(y ~ cs(x) + z + (1 | g), family = acat)
 # for ordered predictors, see the mo() function.
 ```
 
-Multinomial.  Uses the categorical distribution for a standard multicategory target.
+Multinomial.  표준적인 다범주 타겟을 위한 범주형 분포를 사용.
 
 ```{r brms-multinom, eval=FALSE}
 brm(y ~ x + z + (1 | g), family = categorical)
 ```
 
-Zero-inflated and hurdle models.
+Zero-inflated 및 허들모델.
 
 ```{r brms-zero, eval=FALSE}
 brm(
@@ -168,50 +199,54 @@ brm(
 brm(y ~ x + z + (1 | g), family = hurdle_lognormal)
 ```
 
-Many more including <span class="emph">weibull</span>, <span class="emph">student t</span>, <span class="emph">beta</span>, <span class="emph">skew normal</span>, <span class="emph">von mises</span>, and more.
+<span class="emph">weibull</span>, <span class="emph">스튜던트 t</span>, <span class="emph">베타</span>, <span class="emph">치우친 정규분포</span>, <span class="emph">von mises</span>, 등등을 포함하여 다수.
 
 
-#### Residual structure and heterogeous variances
+#### 잔차 구조와 이종분산
 
-Various functions exist to model temporal, spatial and other residual structure.
+시간적, 공간적 잔차 구조를 모델링하기 위해 다양한 함수들이 존재합니다.
 
 ```{r brms-ar, eval=FALSE}
-brm(y ~  time +  (1 + time | g) +   ar(time, person, p = 2))
+brm(y ~  time +  (1 + time | g) + ar(time, person, p = 2))
 ```
 
-We can model the variance just like anything else.
+분산을 다른 것과 같이 모델할 수 있다.
 
 ```{r brms-hetvar, eval=FALSE}
 brm(y ~ x + z + (1 | g), 
     sigma ~ x + (1 | g))
 ```
 
-We can allow the variance components themselves to vary by some group.  In the following we'd have separate variances for male and female.
+분산성분 자체가 그룹에 따라 변하도록 할 수 있습니다.
+다음에서, 남자와 여자에 대해 분산이 분리합니다.
 
 ```{r brms-grouped-vc, eval=FALSE}
 brm(count ~ Sex + (1|gr(g, by = Sex)))
 ```
 
-Multi-membership models, where individuals may belong to more than one cluster can also be used.  In the following, `g1` and `g2` are identical conceptually, but may take on different values for some observations.
+각 개인이 하나 이상의 클러스터에 속할 수 있는 멀티멤버십 모델도 사용할 수 있습니다.
+다음에서, `g1` 과 `g2` 가 개념적으로 동일하지만, 어떤 관측값들에 대해 다른 값을 가질 수 있습니다.
 
 ```{r brms-multimem, eval=FALSE}
 brm(y ~ 1 + (1 | mm(g1, g2))) 
 ```
 
 
-#### Multivariate mixed models
+#### 다변량 mixed model
 
-For multiple outcomes we can allow random effects to be correlated.  In the following, `ID1` is an arbitrary label that serves to connect/correlate the modeled random effects across multiple outcomes `y1` and `y2`.  In SEM literature this would be akin to a parallel process model if we add a random slope for a time indicator variable.
+다중 반응변수에 대해, 랜덤효과들이 상관관계를 가지게 할 수 있다.
+다음에서, `ID1` 는 다중 반응변수 `y1` 과 `y2` 에 있는 모델된 랜덤 효과를 연결/상관하기 위해 제공하는 랜덤한 라벨이다.
+시간 indicator 변수에 대한 랜덤 기울기를 추가한다면 SEM 논문에서 이것은 병렬프로세스에 가까울 것이다.
 
 ```{r brms-multivariate, eval=FALSE}
 bf(
   y1 ~ x + z + (1 | ID1 |g),
   y2 ~ x + z + (1 | ID1 |g)
 )
-
 ```
 
-Such an approach would also make sense for zero-inflated models for example, where we want random effects for the same clustering to be correlated for both the count model and zero-inflated model.
+예를 들어, 이러한 접근법은 0-인플레이트된 모델에 대해 의미가 있을 수도 있다. 
+이는 같은 클러스터링이 count 모델과 0-인플레이티드 모델 모두에 대해 상관되기 위한 랜덤 효과를 원한다.
 
 ```{r brms-mv-zero, eval=FALSE}
 bf(y  ~ x * z + (1 + x | ID1 | g), 
@@ -219,16 +254,17 @@ bf(y  ~ x * z + (1 + x | ID1 | g),
 ```
 
 
-#### Additive mixed models
+#### Additive mixed model
 
-Much of the basic functionality of <span class="pack">mgcv</span> is incorporated, and works with the same syntax.
+<span class="pack">mgcv</span> 의 많은 기능들이 적용되고, 같은 문법으로 작동합니다.
 
 ```{r brms-gam, eval=FALSE}
 brm(y ~ s(x) + z + (1 | g))
 ```
 
-#### Nonlinear mixed models
+#### 비선형 mixed models
 
+함수 형태가 <span class="pack">nlme</span> 로 알려진, 유사한 상황을 모델링할 수 있습니다.
 We can model similar situations where the functional form is known, as with <span class="pack">nlme</span>.
 
 ```{r, eval=FALSE}
@@ -242,7 +278,7 @@ bf(
 
 #### Censored and truncated targets
 
-For censored data, just supply the censoring variables as you would typically note in a survival/event-history model.
+censored 데이터에는, 생존/이벤트-히스토리 모델에서 하는 것 처럼 센서링 변수를 사용합니다.
 
 ```{r brms-cens, eval=FALSE}
 bf(y | cens(censor_variable) ~ x + z + (1 | g), family = lognormal)  # frailty
@@ -250,15 +286,16 @@ bf(y | cens(censor_variable) ~ x + z + (1 | g), family = lognormal)  # frailty
 # see also stan_jm in the rstanarm package for joint models
 ```
 
-For truncated models, specify the lower bound, upper bound, or both.
+truncated 모델에 대해서는, lower, upper 바운드를 명시합니다.
 
 ```{r brms-trunc, eval=FALSE}
 brm(count | trunc(ub = 10) ~ x * z + (1 | g), family = poisson)
 ```
 
-#### Measurment error
+#### 측정오차
 
-There may be cases where we know one variable is assumed to be measured with error, such as the mean of several trials, or latent variables estimated by some other means.  In the following, `sdx` is the known standard deviation for x, which may be constant or vary by observation.
+trial 들의 평균이나 다른 평균으로 측정된 잠재변수들과 같이, 하나의 변수가 오차와 함께 측정된 것으로 가정되는지를 알 수 있는 경우가 있습니다. 
+다음에서, `sdx` 는 x 의 알려진 표준편차인데, 상수이거나 관측값마다 변할 수 있습니다.
 
 ```{r brms-meas-err, eval=FALSE}
 brm(y ~ me(x, sdx) + z + (1 | g))
@@ -266,20 +303,21 @@ brm(y ~ me(x, sdx) + z + (1 | g))
 
 #### Mixture models
 
-Two clusters specified by multiple families along with `mixture`. So I guess this is technically a mixture mixed model.
+`mixture` 와 함께 다중 패밀리로 명시된 클러스터 두개.
+따라서 이것이 기술적으로 mixture mixed model 인 것 같다.
 
 ```{r brms-mixture, eval=FALSE}
 brm(y ~ x + z + (1 | g), family = mixture(gaussian, gaussian))
 ```
 
-A 'growth mixture model'.
+'growth mixture model'.
 
 ```{r brms-growth-mix, eval=FALSE}
 brm(y ~ time + z + (1 + time | g), family = mixture(gaussian, gaussian))
 ```
 
 
-#### Missing Values
+#### 결측값
 
 We can construct the model formula for missing values as follows, including using a mixed model as the imputation model (for `x`).
 
@@ -291,6 +329,7 @@ f =
 ```
 
 
-## Beyond the Model
+## 모델 외
 
-The development of Stan and packages like <span class="pack">rstanarm</span> and <span class="pack">brms</span> is rapid, and with the combined powers of those involved, there are a lot of useful tools for exploring the model results.  Even if one found a specialty package for a specific type of mixed model, it is doubtful you would have as many tools for model exploration such as posterior predictive checks, marginal effects, model comparison, basic model diagnostics and more.  That said, the Stan ecosystem of R packages is notable at this point, and so use what works for your situation.
+Stan 과 <span class="pack">rstanarm</span> 과 <span class="pack">brms</span> 패키지와 같은 개발은 빠르고, 연관된 것들의 조합된 파워로 모델 결과를 탐색하는 도구들이 많이 있습니다.
+Even if one found a specialty package for a specific type of mixed model, it is doubtful you would have as many tools for model exploration such as posterior predictive checks, marginal effects, model comparison, basic model diagnostics and more.  That said, the Stan ecosystem of R packages is notable at this point, and so use what works for your situation.

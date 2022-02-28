@@ -6,7 +6,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Issues
+# 이슈사항
 
 <div style = 'text-align: center'>
 <i class="fas fa-exclamation-triangle fa-5x" style = 'color:#990024'></i>
@@ -39,10 +39,15 @@ The first two are commonly used by those trained with an econometrics perspectiv
 The nature of fixed effects models allow you to control for, but not actually explore, cluster level effects.  This makes them a non-starter for many investigations, as those are typically of prime theoretical interest. In addition, the main concern econometricians have that leads them to prefer such models is easily accommodated in standard mixed models, so there is very little reason to employ them, as they are special cases of the more flexible mixed model.
 
 
-### Growth curve models
+### 성장곡선모델
 
-With longitudinal data, growth curve models are a latent variable approach that is commonly used in these situations. With appropriate setup, they will duplicate the results of a mixed model.  In my opinion, there are few reasons to use a growth curve approach over a mixed model, and many reasons not to, not least of which is that effects which would be simple to interpret in the mixed model approach are now a source of confusion to applied researchers in the growth curve model, even though it's the same thing.  Furthermore, indirect effects, growth mixture models and other extensions common in the latent variable approach are more easily implemented in the mixed model approach.  In short, only the most complicated models would perhaps require using structural equation modeling, but as such, would also bring with them  many other issues.  See more [here](https://m-clark.github.io/sem/latent-growth-curves.html) and [here](https://m-clark.github.io/mixed-growth-comparison/). The [supplemental][Supplemental] section has a full demonstration of how to equate these models.
-
+longitudinal 데이터에서, 성장곡선모델은 이러한 상황에서 흔히 사용하는 잠재변수방법입니다.
+적절하게 설정하면 mixed 모델 결과가 재현됩니다.
+내 의견우르논, mixed 모델이 아닌 성장곡선 방법을 사용할 이유는 거의 없고, 성장곡선방법과 mixed model 방법이 같은 것임에도 불구하고, mixed model 에서는 간단한 효과가 성장곡선 모델을 사용하는 응용 연구자들에게는 헷갈리게 만드는 원인이기 때문에 사용하지 않을 이유가 많습니다.
+더군다나, 잠재변수 방법에서 흔한 간접 효과, 성장 mixture 모델, 기타 확장들은 mixed 모델 방법에서 더 쉽게 구현됩니다. 
+요약하면, 가장 복잡한 모형 만이 구조 방정식 모형을 사용해야 하는 것일 것이지만, 다른 이슈들이 더 생깁니다. 
+[여기](https://m-clark.github.io/sem/latent-growth-curves.html)와 [여기](https://m-clark.github.io/mixed-growth-comparison/) 를 살펴보세요. 
+[supplemental][Supplemental] 섹션에는 이러한 모형과 같게 만드는 방법에 관한 예제가 있습니다.
 
 
 ## Sample Sizes
